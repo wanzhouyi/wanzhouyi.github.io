@@ -2,7 +2,7 @@
 <html lang="chinese (simplified)">
 <head>
 
-        <title>python中的poplib模块详解</title>
+        <title>搭建基于mariadb和nginx的wordpress</title>
         <meta charset="utf-8" />
 
 
@@ -48,8 +48,8 @@
                 <li><a href="/">首页</a></li>
 
                   <li><a href="/category/ji-qi-xue-xi.html">机器学习</a></li>
-                  <li class="active"><a href="/category/pythonji-chu.html">python基础</a></li>
-                  <li><a href="/category/xiao-ji-qiao.html">小技巧</a></li>
+                  <li><a href="/category/pythonji-chu.html">python基础</a></li>
+                  <li class="active"><a href="/category/xiao-ji-qiao.html">小技巧</a></li>
 
               </ul>
             </div>
@@ -62,12 +62,12 @@
 
             <header>
                 <h2 class="entry-title">
-                    <a href="/pythonzhong-de-poplibmo-kuai-xiang-jie.html" rel="bookmark" title="Permalink to python中的poplib模块详解">python中的poplib模块详解</a></h2>
+                    <a href="/da-jian-ji-yu-mariadbhe-nginxde-wordpress.html" rel="bookmark" title="Permalink to 搭建基于mariadb和nginx的wordpress">搭建基于mariadb和nginx的wordpress</a></h2>
                 
             </header>
             <footer class="post-info">
-                <abbr class="published" title="2018-10-30T00:00:00+01:00">
-                    2018-10-30&nbsp;&nbsp;
+                <abbr class="published" title="2018-11-28T00:00:00+01:00">
+                    2018-11-28&nbsp;&nbsp;
                     <!-- <address class="vcard author"> -->
                         By&nbsp;&nbsp;
                         <a class="url fn" href="/author/wanzhouyi.html"> wanzhouyi</a>
@@ -1228,30 +1228,13 @@ h6:hover .anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>获取邮件主要有两种方式，一种是通过pop3，一种是通过imap。pop3协议相对来说简单，本章先讲如何用pop3收取邮件。
-pop3全称是Post Office Protocol - Version 3，即pop协议的第三个版本。提供了SSL加密的POP3协议被称为POP3S。典型的通信过程如下：</p>
-<ol>
-<li>用户启动客户端</li>
-<li>客户端与邮件服务器建立TCP连接，默认端口是110</li>
-<li>客户端向邮件服务器发送POP操作命令，如查询。具体的命令见后文</li>
-<li>邮件服务器解析命令并执行相应操作，最后返回结果给客户端</li>
-<li>客户端收到邮件服务器返回的结果并解析成用户可以阅读的形式</li>
-</ol>
-<table>
-    <tr><td>命令</td><td>描述</td></tr>
-    <tr><td>USER</td><td>用户名</td></tr>
-    <tr><td>PASS</td><td>用户密码</td></tr>
-    <tr><td>APOP</td><td>MD5消息摘要</td></tr>
-    <tr><td>STAT</td><td>请求邮箱的统计数据，如邮件总数</td></tr>
-    <tr><td>UIDL</td><td>返回邮件的唯一标识符</td></tr>
-    <tr><td>LIST</td><td>返回邮件数量和每个邮件的大小</td></tr>
-    <tr><td>RETR</td><td>返回由参数标识的邮件的全部文本</td></tr>
-    <tr><td>DELE</td><td>将参数标识的邮件标记为删除，由quit命令执行</td></tr>
-    <tr><td>RSET</td><td>重置所有标记为删除的邮件，用于撤消DELE命令</td></tr>
-    <tr><td>TOP</td><td>返回由参数标识的邮件前n行内容，n必须是正整数</td></tr>
-    <tr><td>NOOP</td><td>服务器返回一个肯定的响应</td></tr>
-    <tr><td>QUIT</td><td>终止会话</td></tr>
-</table><p>POP3协议中有三种状态，认证状态，处理状态，和更新状态。命令的执行可以改变协议的状态，而对于具体的某命令，它只能在具体的状态下使用。客户机与服务器刚与服务器建立连接时，它的状态为认证状态；一旦客户机提供了自己身份并被成功地确认，即由认可状态转入处理状态； 在完成相应的操作后客户机发出QUIT命令（具体说明见后续内容），则进入更新状态，更新之后又重返认可状态；当然在认可状态下执行QUIT命令，可释放连接。</p>
+<p>本文将描述如何搭建wordpress，文章中使用的环境如下：</p>
+<ul>
+<li>windows 10 64位</li>
+<li>php-7.2.12-Win32-VC15-x64</li>
+<li>nginx-1.13.3</li>
+<li>mariadb-10.3.11-winx64</li>
+</ul>
 
 </div>
 </div>
@@ -1259,95 +1242,128 @@ pop3全称是Post Office Protocol - Version 3，即pop协议的第三个版本�
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>python的内建库中提供了poplib用于使用pop3协议进行邮件操作。<a href="https://docs.python.org/3/library/poplib.html">传送门</a></p>
-<p>poplib模块提供了两个类：</p>
-<ol>
-<li>class poplib.POP3（host，port = POP3_PORT [，timeout ] ）
- 该类实现了实际的POP3协议。初始化实例时会创建连接。如果省略端口，则使用标准POP3端口（110）。可选的timeout参数指定连接尝试的超时（以秒为单位）（如果未指定，将使用全局默认超时设置）。</li>
-<li>class poplib.POP3_SSL（host，port = POP3_SSL_PORT，keyfile = None，certfile = None，timeout = None，context = None ）
- 这是POP3通过SSL加密套接字连接到服务器的子类。如果未指定端口 995，则使用标准的POP3-over-SSL端口。 超时在POP3构造函数中起作用。 context是一个可选ssl.SSLContext对象，它允许将SSL配置选项，证书和私钥绑定到单个（可能是长期存在的）结构中。keyfile和certfile是上下文的传统替代方案- 它们可以分别指向用于SSL连接的PEM格式的私钥和证书链文件。</li>
+<h3 id="&#21019;&#24314;mariadb&#25968;&#25454;&#24211;">&#21019;&#24314;mariadb&#25968;&#25454;&#24211;<a class="anchor-link" href="#&#21019;&#24314;mariadb&#25968;&#25454;&#24211;">&#182;</a></h3><ol>
+<li>下载。<a href="https://mirrors.tuna.tsinghua.edu.cn/mariadb//mariadb-10.3.11/winx64-packages/mariadb-10.3.11-winx64.zip">下载地址</a></li>
+<li>解压。解压后的目录结构如下图：<img src="https://raw.githubusercontent.com/wanzhouyi/wanzhouyi.github.io/master/images/20181128mariadb/1_dir_structure.png" alt="mariadb目录结构">  </li>
+<li>在命令行中切换到mariadb的bin目录下<img src="https://raw.githubusercontent.com/wanzhouyi/wanzhouyi.github.io/master/images/20181128mariadb/2_cd_bin.png" alt="切换到bin目录"><br>
+注意一定要以管理员身份运行，否则会报错。</li>
+<li>安装并启动服务。<br>
+4.1 安装服务的命令:mysqld --install 服务名。本文中服务名就是mariadb。<br>
+4.2 启动mariadb服务:net start mariadb<br>
+4.3 进入数据库：mysql -u root -p
+如果能成功进入数据库，说明mariadb已成功安装，如下图所示
+<img src="https://raw.githubusercontent.com/wanzhouyi/wanzhouyi.github.io/master/images/20181128mariadb/3_install_service.png" alt="安装服务"><br>
+ps:停止服务的命令是:net stop mariadb； 删除服务的命令是: sc delete mariadb</li>
+<li>修改数据库密码。
+修改密码的命令是：SET PASSWORD FOR 'root'@'localhost' = PASSWORD('123456');这里把root用户的密码修改为123456。
+<img src="https://raw.githubusercontent.com/wanzhouyi/wanzhouyi.github.io/master/images/20181128mariadb/4_change_pwd.png" alt="修改密码">    </li>
+<li>使用Navicat Premium连接测试。
+<img src="https://raw.githubusercontent.com/wanzhouyi/wanzhouyi.github.io/master/images/20181128mariadb/5_navicat_test.png" alt="navicat">    </li>
 </ol>
-<p>由于126的邮箱默认是支持POP3的，所以本文以126邮箱为例</p>
 
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">poplib</span>
-<span class="n">uname</span><span class="o">=</span><span class="s1">&#39;*****&#39;</span>
-<span class="n">upwd</span><span class="o">=</span><span class="s1">&#39;*****&#39;</span>
-<span class="n">M</span><span class="o">=</span><span class="n">poplib</span><span class="o">.</span><span class="n">POP3</span><span class="p">(</span><span class="s1">&#39;pop.126.com&#39;</span><span class="p">)</span><span class="c1">#与服务器建立TCP连接</span>
-<span class="n">res_user_cmd</span><span class="o">=</span><span class="n">M</span><span class="o">.</span><span class="n">user</span><span class="p">(</span><span class="n">uname</span><span class="p">)</span><span class="c1">#发送用户命令，返回应指示需要发送密码</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;user 命令的返回值是：</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">res_user_cmd</span><span class="p">))</span>
-<span class="n">res_pass_cmd</span><span class="o">=</span><span class="n">M</span><span class="o">.</span><span class="n">pass_</span><span class="p">(</span><span class="n">upwd</span><span class="p">)</span><span class="c1">#发送密码命令，返回邮件封数和邮箱大小</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;pass 命令的返回值是：</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">res_pass_cmd</span><span class="p">))</span>
-<span class="n">res_stat_cmd</span><span class="o">=</span><span class="n">M</span><span class="o">.</span><span class="n">stat</span><span class="p">()</span><span class="c1">#获取邮箱状态。结果是2个整数的元组：。(message count, mailbox size)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;stat 命令的返回值中message count 是</span><span class="si">{}</span><span class="s1">,邮箱大小是</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">res_stat_cmd</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">res_stat_cmd</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
-<span class="n">ret</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">list</span><span class="p">()</span><span class="c1"># 列出服务器上邮件信息，这个会对每一封邮件都输出id和大小，形如 b&#39;1366 16325&#39;。不象stat输出的是总的统计信息</span>
-<span class="n">res_first_mail</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">retr</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="c1"># 取第一封邮件完整信息</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;第一封邮件的行数是</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">res_first_mail</span><span class="p">)))</span>
-
-<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">res_first_mail</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
-    <span class="c1"># 输出邮件</span>
-    <span class="k">pass</span>
-<span class="n">M</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>user 命令的返回值是：b&#39;+OK core mail&#39;
-pass 命令的返回值是：b&#39;+OK 1367 message(s) [331756844 byte(s)]&#39;
-stat 命令的返回值中message count 是1367,邮箱大小是331756844
-第一封邮件的行数是3
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[3]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>b&#39;+OK core mail&#39;</pre>
-</div>
-
-</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="&#23433;&#35013;&#24182;&#37197;&#32622;php">&#23433;&#35013;&#24182;&#37197;&#32622;php<a class="anchor-link" href="#&#23433;&#35013;&#24182;&#37197;&#32622;php">&#182;</a></h3><ol>
+<li><a href="https://windows.php.net/downloads/releases/php-7.2.12-Win32-VC15-x64.zip">php下载</a></li>
+<li>解压。解压后的目录结构如下<img src="https://raw.githubusercontent.com/wanzhouyi/wanzhouyi.github.io/master/images/20181128mariadb/6_php_dir.png" alt="php目录结构"> </li>
+<li>创建配置文件。在php解压目录下找到php.ini-production文件，将其拷贝一份，并将副本的名称修改为php.ini
+<img src="https://raw.githubusercontent.com/wanzhouyi/wanzhouyi.github.io/master/images/20181128mariadb/7_php_ini.png" alt="创建配置文件"> </li>
+<li>个性配置文件。<br>
+4.1 放开注释extension=mysqli<br>
+4.2 放开注释extension=pdo_mysql<br>
+4.3 放开注释cgi.fix_pathinfo=1。这一步很重要，这里是php的CGI的设置，后文中nginx将使用这个cgi。  </li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/wanzhouyi/wanzhouyi.github.io/master/images/20181128mariadb/8_php_mysql.png" alt="php_mariadb_config"></p>
 
 </div>
 </div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="&#23433;&#35013;&#24182;&#37197;&#32622;nginx">&#23433;&#35013;&#24182;&#37197;&#32622;nginx<a class="anchor-link" href="#&#23433;&#35013;&#24182;&#37197;&#32622;nginx">&#182;</a></h3><ol>
+<li><a href="https://wanzhouyi.github.io/windowsban-ben-nginxbang-zhu-wen-dang.html">nginx下载</a></li>
+<li><p>解压，找到conf目录下的nginx.conf文件并修改<br>
+2.1 修改root目录，添加index.php为默认打开页面。修改后的节点如下<br>
+ location / {</p>
+
+<pre><code>     root   D:\Program\wordpress;
+     index  index.php index.html index.htm;
+ }
+</code></pre>
+<p>2.2 修改php相关节点</p>
+<p>location ~ .php$ {</p>
+
+<pre><code>     root           D:\Program\wordpress;  
+
+     fastcgi_pass   127.0.0.1:9000;  
+
+     fastcgi_index  index.php;   
+
+     fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+
+     include        fastcgi_params;
+ }</code></pre>
+</li>
+</ol>
+<p>将/scripts改为“$document_root”，这里的“$document_root”就是指前面“root”所指的站点路径</p>
+<ol>
+<li>nginx的启动
+<img src="https://raw.githubusercontent.com/wanzhouyi/wanzhouyi.github.io/master/images/20181128mariadb/9_start_nginx.png" alt="启动nginx"> 
+ps:nginx的详细操作请见<a href="https://wanzhouyi.github.io/windowsban-ben-nginxbang-zhu-wen-dang.html">https://wanzhouyi.github.io/windowsban-ben-nginxbang-zhu-wen-dang.html</a></li>
+<li>在D:\Program\wordpress下创建phpinfo.php文件，文件内容是:<br>
+ &lt;?php<br>
+ phpinfo();<br>
+ ?&gt;</li>
+<li>此时打开监听的端口应该就能看到php页面了
+<img src="https://raw.githubusercontent.com/wanzhouyi/wanzhouyi.github.io/master/images/20181128mariadb/9_phpinfo.png" alt="启动nginx"> </li>
+</ol>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="&#23433;&#35013;&#24182;&#37197;&#32622;wordpress">&#23433;&#35013;&#24182;&#37197;&#32622;wordpress<a class="anchor-link" href="#&#23433;&#35013;&#24182;&#37197;&#32622;wordpress">&#182;</a></h3><ol>
+<li><a href="https://wordpress.org/latest.zip">下载wordpress</a></li>
+<li><p>将wp-config-sample.php文件重命名为wp-config.php，修改如下几个节点为实际信息</p>
+<p>/*<em> The name of the database for WordPress </em>/</p>
+<p>define('DB_NAME', 'wptest');</p>
+<p>/*<em> MySQL database username </em>/</p>
+<p>define('DB_USER', 'root');</p>
+<p>/*<em> MySQL database password </em>/</p>
+<p>define('DB_PASSWORD', '123456');</p>
+<p>/*<em> MySQL hostname </em>/</p>
+<p>define('DB_HOST', 'localhost');</p>
+</li>
+<li>打开地址<a href="http://localhost:8088/wp-content">http://localhost:8088/wp-content</a> 即出现如下初始化页面
+3.1 选择语言
+<img src="https://raw.githubusercontent.com/wanzhouyi/wanzhouyi.github.io/master/images/20181128mariadb/11_php_admin.png" alt="选择语言"> 
+3.2 配置站点基本信息
+<img src="https://raw.githubusercontent.com/wanzhouyi/wanzhouyi.github.io/master/images/20181128mariadb/12_wp_init_config.png" alt="站点信息"> 
+3.3 配置完成
+<img src="https://raw.githubusercontent.com/wanzhouyi/wanzhouyi.github.io/master/images/20181128mariadb/13_wp_init_finish.png" alt="站点信息"> 
+3.4 配置完成后需要重新登录
+<img src="https://raw.githubusercontent.com/wanzhouyi/wanzhouyi.github.io/master/images/20181128mariadb/14_wp_login.png" alt="站点信息"> 
+3.4 登录成功后跳转到dashboad页面
+<img src="https://raw.githubusercontent.com/wanzhouyi/wanzhouyi.github.io/master/images/20181128mariadb/15_wp_dashboard.png" alt="站点信息"> </li>
+</ol>
 
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>至此，大功告成。在windown 10 环境下成功搭建了一套基于mariadb、nginx、php的wordpress。</p>
+
+</div>
+</div>
 </div>
  
 
@@ -1392,8 +1408,8 @@ stat 命令的返回值中message count 是1367,邮箱大小是331756844
 <h4>文章</h4>
  <ul class="blank">
         <li><a href="/category/ji-qi-xue-xi.html">机器学习</a></li>
-        <li class="active"><a href="/category/pythonji-chu.html">python基础</a></li>
-        <li><a href="/category/xiao-ji-qiao.html">小技巧</a></li>
+        <li><a href="/category/pythonji-chu.html">python基础</a></li>
+        <li class="active"><a href="/category/xiao-ji-qiao.html">小技巧</a></li>
   </ul> -->
 
 <h4>分类</h4>
