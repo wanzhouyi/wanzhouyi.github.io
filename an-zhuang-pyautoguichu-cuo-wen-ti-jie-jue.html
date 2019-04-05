@@ -2,7 +2,7 @@
 <html lang="chinese (simplified)">
 <head>
 
-        <title>如何从github中下载指定文件夹</title>
+        <title>安装pyautogui出错问题解决</title>
         <meta charset="utf-8" />
 
 
@@ -63,12 +63,12 @@
 
             <header>
                 <h2 class="entry-title">
-                    <a href="/ru-he-cong-githubzhong-xia-zai-zhi-ding-wen-jian-jia.html" rel="bookmark" title="Permalink to 如何从github中下载指定文件夹">如何从github中下载指定文件夹</a></h2>
+                    <a href="/an-zhuang-pyautoguichu-cuo-wen-ti-jie-jue.html" rel="bookmark" title="Permalink to 安装pyautogui出错问题解决">安装pyautogui出错问题解决</a></h2>
                 
             </header>
             <footer class="post-info">
-                <abbr class="published" title="2018-10-25T00:00:00+02:00">
-                    2018-10-25&nbsp;&nbsp;
+                <abbr class="published" title="2019-04-06T00:00:00+02:00">
+                    2019-04-06&nbsp;&nbsp;
                     <!-- <address class="vcard author"> -->
                         By&nbsp;&nbsp;
                         <a class="url fn" href="/author/wanzhouyi.html"> wanzhouyi</a>
@@ -1229,8 +1229,7 @@ h6:hover .anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>如果要下载git中某一个文件夹，通常做法是将整个目录下载下来，再选择其中的文件夹。其实github是支持svn的，使用svn的话就可以很方便地下载指定文件夹了。
-示例中希望可以下载<a href="https://github.com/getpelican/pelican-themes">https://github.com/getpelican/pelican-themes</a> 的gum文件夹，详细路径是<a href="https://github.com/getpelican/pelican-themes/tree/master/gum">https://github.com/getpelican/pelican-themes/tree/master/gum</a> ，那么下载链接中的tree/master换成trunk即可，如下图所示：</p>
+<p>用pip安装pyautogui时报错，找了蛮多方法都不行，报错信息如下</p>
 
 </div>
 </div>
@@ -1238,8 +1237,30 @@ h6:hover .anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><img src="https://raw.githubusercontent.com/wanzhouyi/wanzhouyi.github.io/master/images/20181026_git_single_folder_01.png" alt="步骤一" title="步骤一">
-<img src="https://raw.githubusercontent.com/wanzhouyi/wanzhouyi.github.io/master/images/20181026_git_single_folder_02.png" alt="步骤二" title="步骤二"></p>
+<p>(venv) D:\TestProj\test_python\am_at_python_feature&gt;pip install pyautogui
+Looking in indexes: <a href="https://pypi.tuna.tsinghua.edu.cn/simple">https://pypi.tuna.tsinghua.edu.cn/simple</a>
+Collecting pyautogui
+  Using cached <a href="https://pypi.tuna.tsinghua.edu.cn/packages/b0/f5/d7b39c588c2ef64e537471e53e5750a426a1a78dcab9e65f502f4b022704/PyAutoGUI-0.9.42.tar.gz">https://pypi.tuna.tsinghua.edu.cn/packages/b0/f5/d7b39c588c2ef64e537471e53e5750a426a1a78dcab9e65f502f4b022704/PyAutoGUI-0.9.42.tar.gz</a>
+Collecting pymsgbox (from pyautogui)
+  Using cached <a href="https://pypi.tuna.tsinghua.edu.cn/packages/b6/65/86379ede1db26c40e7972d7a41c69cdf12cc6a0f143749aabf67ab8a41a1/PyMsgBox-1.0.6.zip">https://pypi.tuna.tsinghua.edu.cn/packages/b6/65/86379ede1db26c40e7972d7a41c69cdf12cc6a0f143749aabf67ab8a41a1/PyMsgBox-1.0.6.zip</a>
+Collecting PyTweening&gt;=1.0.1 (from pyautogui)
+  Using cached <a href="https://pypi.tuna.tsinghua.edu.cn/packages/b9/f8/c32a58d6e4dff8aa5c27e907194d69f3b57e525c2e4af96f39c6e9c854d2/PyTweening-1.0.3.zip">https://pypi.tuna.tsinghua.edu.cn/packages/b9/f8/c32a58d6e4dff8aa5c27e907194d69f3b57e525c2e4af96f39c6e9c854d2/PyTweening-1.0.3.zip</a>
+Collecting Pillow (from pyautogui)
+  Using cached <a href="https://pypi.tuna.tsinghua.edu.cn/packages/40/f2/a424d4d5dd6aa8c26636969decbb3da1c01286d344e71429b1d648bccb64/Pillow-6.0.0-cp37-cp37m-win_amd64.whl">https://pypi.tuna.tsinghua.edu.cn/packages/40/f2/a424d4d5dd6aa8c26636969decbb3da1c01286d344e71429b1d648bccb64/Pillow-6.0.0-cp37-cp37m-win_amd64.whl</a>
+Collecting pyscreeze&gt;=0.1.20 (from pyautogui)
+  Using cached <a href="https://pypi.tuna.tsinghua.edu.cn/packages/db/04/d265ef033d283df6c2d81464cd52eecaf41fb788b52d0f78593b7f44fd6c/PyScreeze-0.1.20.tar.gz">https://pypi.tuna.tsinghua.edu.cn/packages/db/04/d265ef033d283df6c2d81464cd52eecaf41fb788b52d0f78593b7f44fd6c/PyScreeze-0.1.20.tar.gz</a>
+Collecting pygetwindow (from pyautogui)
+  Using cached <a href="https://pypi.tuna.tsinghua.edu.cn/packages/01/ed/56d4a369c6e18f6b239d9ef37b3222ba308bfebf949571b2611ff7d64f1d/PyGetWindow-0.0.4.tar.gz">https://pypi.tuna.tsinghua.edu.cn/packages/01/ed/56d4a369c6e18f6b239d9ef37b3222ba308bfebf949571b2611ff7d64f1d/PyGetWindow-0.0.4.tar.gz</a>
+    Complete output from command python setup.py egg_info:
+    Traceback (most recent call last):
+      File "<string>", line 1, in <module>
+      File "C:\Users\mango\AppData\Local\Temp\pip-install-hnrk6jlz\pygetwindow\setup.py", line 11, in <module>
+        long_description = fh.read()
+    UnicodeDecodeError: 'gbk' codec can't decode byte 0xa2 in position 905: illegal multibyte sequence</p>
+
+<pre><code>----------------------------------------
+</code></pre>
+<p>Command "python setup.py egg_info" failed with error code 1 in C:\Users\mango\AppData\Local\Temp\pip-install-hnrk6jlz\pygetwindow\</p>
 
 </div>
 </div>
@@ -1247,7 +1268,39 @@ h6:hover .anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>git确实是很强大，熟悉github可以快速地学习。</p>
+<p>最后通过安装指定版本的pyautogui解决此问题。pip install pyautogui==0.9.35</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>(venv) D:\TestProj\test_python\am_at_python_feature&gt;pip install pyautogui==0.9.35
+Looking in indexes: <a href="https://pypi.tuna.tsinghua.edu.cn/simple">https://pypi.tuna.tsinghua.edu.cn/simple</a>
+Collecting pyautogui==0.9.35
+  Downloading <a href="https://pypi.tuna.tsinghua.edu.cn/packages/e7/34/9b1cc150ef2aead019c7eba37594c79067fc7ad7924eb527d8106716232b/PyAutoGUI-0.9.35.zip">https://pypi.tuna.tsinghua.edu.cn/packages/e7/34/9b1cc150ef2aead019c7eba37594c79067fc7ad7924eb527d8106716232b/PyAutoGUI-0.9.35.zip</a> (57kB)
+    100% |████████████████████████████████| 61kB 160kB/s
+Collecting pymsgbox (from pyautogui==0.9.35)
+  Using cached <a href="https://pypi.tuna.tsinghua.edu.cn/packages/b6/65/86379ede1db26c40e7972d7a41c69cdf12cc6a0f143749aabf67ab8a41a1/PyMsgBox-1.0.6.zip">https://pypi.tuna.tsinghua.edu.cn/packages/b6/65/86379ede1db26c40e7972d7a41c69cdf12cc6a0f143749aabf67ab8a41a1/PyMsgBox-1.0.6.zip</a>
+Collecting PyTweening&gt;=1.0.1 (from pyautogui==0.9.35)
+  Using cached <a href="https://pypi.tuna.tsinghua.edu.cn/packages/b9/f8/c32a58d6e4dff8aa5c27e907194d69f3b57e525c2e4af96f39c6e9c854d2/PyTweening-1.0.3.zip">https://pypi.tuna.tsinghua.edu.cn/packages/b9/f8/c32a58d6e4dff8aa5c27e907194d69f3b57e525c2e4af96f39c6e9c854d2/PyTweening-1.0.3.zip</a>
+Collecting Pillow (from pyautogui==0.9.35)
+  Using cached <a href="https://pypi.tuna.tsinghua.edu.cn/packages/40/f2/a424d4d5dd6aa8c26636969decbb3da1c01286d344e71429b1d648bccb64/Pillow-6.0.0-cp37-cp37m-win_amd64.whl">https://pypi.tuna.tsinghua.edu.cn/packages/40/f2/a424d4d5dd6aa8c26636969decbb3da1c01286d344e71429b1d648bccb64/Pillow-6.0.0-cp37-cp37m-win_amd64.whl</a>
+Collecting pyscreeze (from pyautogui==0.9.35)
+  Using cached <a href="https://pypi.tuna.tsinghua.edu.cn/packages/db/04/d265ef033d283df6c2d81464cd52eecaf41fb788b52d0f78593b7f44fd6c/PyScreeze-0.1.20.tar.gz">https://pypi.tuna.tsinghua.edu.cn/packages/db/04/d265ef033d283df6c2d81464cd52eecaf41fb788b52d0f78593b7f44fd6c/PyScreeze-0.1.20.tar.gz</a>
+Building wheels for collected packages: pyautogui, pymsgbox, PyTweening, pyscreeze
+  Building wheel for pyautogui (setup.py) ... done
+  Stored in directory: C:\Users\mango\AppData\Local\pip\Cache\wheels\bb\10\f8\e0ff5b9330fdf461b49c948f199ba66cecf4fd018549e4bd85
+  Building wheel for pymsgbox (setup.py) ... done
+  Stored in directory: C:\Users\mango\AppData\Local\pip\Cache\wheels\13\11\b0\a18d6c20941fbb931611722d9f648380cb5bc2be230437a6d9
+  Building wheel for PyTweening (setup.py) ... done
+  Stored in directory: C:\Users\mango\AppData\Local\pip\Cache\wheels\09\92\d8\399edb0855f5d8e05a4f7d3b45f1f690fe401d896feec1007b
+  Building wheel for pyscreeze (setup.py) ... done
+  Stored in directory: C:\Users\mango\AppData\Local\pip\Cache\wheels\7a\6e\b6\9557e113812bed323ec46736d1f290bae69eed0c318541c022
+Successfully built pyautogui pymsgbox PyTweening pyscreeze
+Installing collected packages: pymsgbox, PyTweening, Pillow, pyscreeze, pyautogui
+Successfully installed Pillow-6.0.0 PyTweening-1.0.3 pyautogui-0.9.35 pymsgbox-1.0.6 pyscreeze-0.1.20</p>
 
 </div>
 </div>
