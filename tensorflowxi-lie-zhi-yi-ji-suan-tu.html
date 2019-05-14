@@ -2,7 +2,7 @@
 <html lang="chinese (simplified)">
 <head>
 
-        <title>关于python中的yield</title>
+        <title>tensorflow系列之一：计算图</title>
         <meta charset="utf-8" />
 
 
@@ -48,8 +48,8 @@
               <ul class="columns">
                 <li><a href="/">首页</a></li>
 
-                  <li><a href="/category/ji-qi-xue-xi.html">机器学习</a></li>
-                  <li class="active"><a href="/category/pythonji-chu.html">python基础</a></li>
+                  <li class="active"><a href="/category/ji-qi-xue-xi.html">机器学习</a></li>
+                  <li><a href="/category/pythonji-chu.html">python基础</a></li>
                   <li><a href="/category/xiao-ji-qiao.html">小技巧</a></li>
 
               </ul>
@@ -63,12 +63,12 @@
 
             <header>
                 <h2 class="entry-title">
-                    <a href="/guan-yu-pythonzhong-de-yield.html" rel="bookmark" title="Permalink to 关于python中的yield">关于python中的yield</a></h2>
+                    <a href="/tensorflowxi-lie-zhi-yi-ji-suan-tu.html" rel="bookmark" title="Permalink to tensorflow系列之一：计算图">tensorflow系列之一：计算图</a></h2>
                 
             </header>
             <footer class="post-info">
-                <abbr class="published" title="2018-10-24T00:00:00+02:00">
-                    2018-10-24&nbsp;&nbsp;
+                <abbr class="published" title="2019-05-10T00:00:00+02:00">
+                    2019-05-10&nbsp;&nbsp;
                     <!-- <address class="vcard author"> -->
                         By&nbsp;&nbsp;
                         <a class="url fn" href="/author/wanzhouyi.html"> wanzhouyi</a>
@@ -1226,37 +1226,121 @@ h6:hover .anchor-link {
 
 .ansi-bold { font-weight: bold; }
 </style>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="yield&#34920;&#36798;&#24335;">yield&#34920;&#36798;&#24335;<a class="anchor-link" href="#yield&#34920;&#36798;&#24335;">&#182;</a></h3><p>yield表达式在定义生成器或异步生成器函数时使用，它只能在函数的内部使用。一旦在函数体中使用了yield，则函数会变成生成器。</p>
-
-</div>
-</div>
-</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">gen</span><span class="p">():</span>  <span class="c1"># defines a generator function</span>
-    <span class="k">yield</span> <span class="mi">123</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#导入tensorflow包，通常取别名tf</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
 
-<span class="k">async</span> <span class="k">def</span> <span class="nf">agen</span><span class="p">():</span> <span class="c1"># defines an asynchronous generator function (PEP 525)</span>
-    <span class="k">yield</span> <span class="mi">123</span>
+<span class="c1">#创建两个常量</span>
+<span class="n">c1</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">([[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]])</span>
+<span class="n">c2</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">([[</span><span class="mi">4</span><span class="p">],[</span><span class="mi">5</span><span class="p">]])</span>
+
+<span class="c1">#创建一个矩阵乘法</span>
+<span class="n">op</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span><span class="n">c2</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">op</span><span class="p">)</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Tensor(&#34;MatMul:0&#34;, shape=(1, 1), dtype=int32)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#创建一个会话，使用默认图</span>
+<span class="n">sess</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+<span class="n">result</span><span class="o">=</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">op</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="n">sess</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[[23]]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#更通用的方式创建图</span>
+<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess1</span><span class="p">:</span>
+    <span class="n">result1</span><span class="o">=</span><span class="n">sess1</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">op</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">result1</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[[23]]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>yield 的作用就是把gen()变成一个generator，带有 yield 的gen()不再是一个普通函数，Python 解释器会将其视为一个 generator，调用生成器不会执行函数，而是返回一个 iterable 对象。原对象就被保存起来，继续往下执行。
-这样带来的好处是在循环中不会占用较多的内存。
-由于作用域问题，在python3.7版本之后不再推荐使用。</p>
+<p>如上所示，tensorflow的图有两个关键要素，一个是tensor（如上文中的常量c1,c2），一个是op（如上文中的op)。一个op接受0个或多个tensor作为输入，执行完成后会输出0个或多个tensor。
+tensor是一个多维的数组，op由开发者自由定义，op必须在会话(tf.Session())中启动</p>
 
 </div>
 </div>
@@ -1303,8 +1387,8 @@ h6:hover .anchor-link {
 
 <h4>文章</h4>
  <ul class="blank">
-        <li><a href="/category/ji-qi-xue-xi.html">机器学习</a></li>
-        <li class="active"><a href="/category/pythonji-chu.html">python基础</a></li>
+        <li class="active"><a href="/category/ji-qi-xue-xi.html">机器学习</a></li>
+        <li><a href="/category/pythonji-chu.html">python基础</a></li>
         <li><a href="/category/xiao-ji-qiao.html">小技巧</a></li>
   </ul> -->
 

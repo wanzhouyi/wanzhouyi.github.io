@@ -2,7 +2,7 @@
 <html lang="chinese (simplified)">
 <head>
 
-        <title>关于python中的yield</title>
+        <title>tensorflow系列之二：变量</title>
         <meta charset="utf-8" />
 
 
@@ -48,8 +48,8 @@
               <ul class="columns">
                 <li><a href="/">首页</a></li>
 
-                  <li><a href="/category/ji-qi-xue-xi.html">机器学习</a></li>
-                  <li class="active"><a href="/category/pythonji-chu.html">python基础</a></li>
+                  <li class="active"><a href="/category/ji-qi-xue-xi.html">机器学习</a></li>
+                  <li><a href="/category/pythonji-chu.html">python基础</a></li>
                   <li><a href="/category/xiao-ji-qiao.html">小技巧</a></li>
 
               </ul>
@@ -63,12 +63,12 @@
 
             <header>
                 <h2 class="entry-title">
-                    <a href="/guan-yu-pythonzhong-de-yield.html" rel="bookmark" title="Permalink to 关于python中的yield">关于python中的yield</a></h2>
+                    <a href="/tensorflowxi-lie-zhi-er-bian-liang.html" rel="bookmark" title="Permalink to tensorflow系列之二：变量">tensorflow系列之二：变量</a></h2>
                 
             </header>
             <footer class="post-info">
-                <abbr class="published" title="2018-10-24T00:00:00+02:00">
-                    2018-10-24&nbsp;&nbsp;
+                <abbr class="published" title="2019-05-15T00:00:00+02:00">
+                    2019-05-15&nbsp;&nbsp;
                     <!-- <address class="vcard author"> -->
                         By&nbsp;&nbsp;
                         <a class="url fn" href="/author/wanzhouyi.html"> wanzhouyi</a>
@@ -1229,24 +1229,57 @@ h6:hover .anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="yield&#34920;&#36798;&#24335;">yield&#34920;&#36798;&#24335;<a class="anchor-link" href="#yield&#34920;&#36798;&#24335;">&#182;</a></h3><p>yield表达式在定义生成器或异步生成器函数时使用，它只能在函数的内部使用。一旦在函数体中使用了yield，则函数会变成生成器。</p>
+<p>本小节主要目的是说明tensorflow中变量的用法。</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">gen</span><span class="p">():</span>  <span class="c1"># defines a generator function</span>
-    <span class="k">yield</span> <span class="mi">123</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#导入tensorflow包</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
 
-<span class="k">async</span> <span class="k">def</span> <span class="nf">agen</span><span class="p">():</span> <span class="c1"># defines an asynchronous generator function (PEP 525)</span>
-    <span class="k">yield</span> <span class="mi">123</span>
+<span class="c1">#定义一个变量，初始化为3</span>
+<span class="n">var1</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;var1&#39;</span><span class="p">)</span>
+<span class="c1">#定义一个常量，值为[4,5]</span>
+<span class="n">var2</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
+
+<span class="c1">#定义一个加法，即add=var1+var2，在tf中如下所示</span>
+<span class="n">add</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">var1</span><span class="p">,</span><span class="n">var2</span><span class="p">)</span>
+
+<span class="c1">#初始化变量，在tf中如果定义了变量，都需要进行初始化，否则会报错</span>
+<span class="n">init</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">()</span>
+
+<span class="c1">#使用默认图</span>
+<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+    <span class="c1">#在tf中初始化变量</span>
+    <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">init</span><span class="p">)</span>
+    <span class="n">result</span><span class="o">=</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">add</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[6 8]
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -1254,12 +1287,54 @@ h6:hover .anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>yield 的作用就是把gen()变成一个generator，带有 yield 的gen()不再是一个普通函数，Python 解释器会将其视为一个 generator，调用生成器不会执行函数，而是返回一个 iterable 对象。原对象就被保存起来，继续往下执行。
-这样带来的好处是在循环中不会占用较多的内存。
-由于作用域问题，在python3.7版本之后不再推荐使用。</p>
+<p>下面实现一个稍复杂一点的使用变量的例子，同时引入tf.assign的用法</p>
 
 </div>
 </div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">var3</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="c1">#平方op</span>
+<span class="n">square_op</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">var3</span><span class="p">)</span>
+<span class="c1">#赋值op，将square_op代表的值赋给var3，在计算图中不能直接用等号赋值</span>
+<span class="n">assign_op</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">var3</span><span class="p">,</span><span class="n">square_op</span><span class="p">)</span>
+
+<span class="n">init</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">()</span>
+<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+    <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">init</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">assign_op</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">var3</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>4
+16
+256
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
  
 
@@ -1303,8 +1378,8 @@ h6:hover .anchor-link {
 
 <h4>文章</h4>
  <ul class="blank">
-        <li><a href="/category/ji-qi-xue-xi.html">机器学习</a></li>
-        <li class="active"><a href="/category/pythonji-chu.html">python基础</a></li>
+        <li class="active"><a href="/category/ji-qi-xue-xi.html">机器学习</a></li>
+        <li><a href="/category/pythonji-chu.html">python基础</a></li>
         <li><a href="/category/xiao-ji-qiao.html">小技巧</a></li>
   </ul> -->
 
