@@ -2,7 +2,7 @@
 <html lang="chinese (simplified)">
 <head>
 
-        <title>tensorflow系列之二：变量</title>
+        <title>tensorflow系列之三：feed和fetch</title>
         <meta charset="utf-8" />
 
 
@@ -63,12 +63,12 @@
 
             <header>
                 <h4 class="entry-title">
-                    <a href="/tensorflowxi-lie-zhi-er-bian-liang.html" rel="bookmark" title="Permalink to tensorflow系列之二：变量">tensorflow系列之二：变量</a></h4>
+                    <a href="/tensorflowxi-lie-zhi-san-feedhe-fetch.html" rel="bookmark" title="Permalink to tensorflow系列之三：feed和fetch">tensorflow系列之三：feed和fetch</a></h4>
                 
             </header>
             <footer class="post-info">
-                <abbr class="published" title="2019-05-15T00:00:00+02:00">
-                    2019-05-15&nbsp;&nbsp;
+                <abbr class="published" title="2019-05-16T00:00:00+02:00">
+                    2019-05-16&nbsp;&nbsp;
                     <!-- <address class="vcard author"> -->
                         By&nbsp;&nbsp;
                         <a class="url fn" href="/author/wanzhouyi.html"> wanzhouyi</a>
@@ -1229,7 +1229,8 @@ h6:hover .anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>本小节主要目的是说明tensorflow中变量的用法。</p>
+<p>本文主要了解tensorflow中feed和fetch的用法。</p>
+<h2 id="feed">feed<a class="anchor-link" href="#feed">&#182;</a></h2><p>在tensorflow中，为了节约内存，可以使用placeholder来声明一个占位符，声明时不分配内存，使用时才分配。对于数据量很大的计算图，这样可以提升运算性能。而如果在运行时分配内存呢，就是使用feed了，顾名思义，feed就是将值填充进占位符。</p>
 
 </div>
 </div>
@@ -1239,26 +1240,27 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#导入tensorflow包</span>
-<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+</pre></div>
 
-<span class="c1">#定义一个变量，初始化为3</span>
-<span class="n">var1</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;var1&#39;</span><span class="p">)</span>
-<span class="c1">#定义一个常量，值为[4,5]</span>
-<span class="n">var2</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
+    </div>
+</div>
+</div>
 
-<span class="c1">#定义一个加法，即add=var1+var2，在tf中如下所示</span>
-<span class="n">add</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">var1</span><span class="p">,</span><span class="n">var2</span><span class="p">)</span>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#例一：一个简单的placeholder和feed，输出“hello tensorflow”</span>
 
-<span class="c1">#初始化变量，在tf中如果定义了变量，都需要进行初始化，否则会报错</span>
-<span class="n">init</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">()</span>
+<span class="c1">#定义一个字符串类型的placeholder</span>
+<span class="n">var_str</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">string</span><span class="p">)</span>
 
-<span class="c1">#使用默认图</span>
 <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
-    <span class="c1">#在tf中初始化变量</span>
-    <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">init</span><span class="p">)</span>
-    <span class="n">result</span><span class="o">=</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">add</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="n">output</span><span class="o">=</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">var_str</span><span class="p">,</span><span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">var_str</span><span class="p">:</span><span class="s2">&quot;hello tensorflow&quot;</span><span class="p">})</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -1275,7 +1277,113 @@ h6:hover .anchor-link {
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>[6 8]
+<pre>hello tensorflow
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#例二：浮点数乘积示例</span>
+
+<span class="c1">#定义两个浮点数类型的placeholder</span>
+<span class="n">var_mul_1</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">var_mul_2</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="c1">#定义一个乘法op</span>
+<span class="n">mul</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">var_mul_1</span><span class="p">,</span><span class="n">var_mul_2</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+    <span class="n">output</span><span class="o">=</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">mul</span><span class="p">,</span><span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">var_mul_1</span><span class="p">:</span><span class="mf">2.</span><span class="p">,</span><span class="n">var_mul_2</span><span class="p">:</span><span class="mf">3.</span><span class="p">})</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>6.0
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#例三：矩阵乘法</span>
+
+<span class="c1">#定义两个矩阵</span>
+<span class="n">var_matrix_1</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span><span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">var_matrix_2</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span><span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+
+<span class="c1">#定义矩阵乘法</span>
+<span class="n">matrix_mul</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">var_matrix_1</span><span class="p">,</span><span class="n">var_matrix_2</span><span class="p">)</span>
+
+<span class="c1">#tf.random_normal 从正态分布中输出随机值</span>
+<span class="n">matrix1</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">random_normal</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+<span class="c1">#tf.truncated_normal 从截断的正态分布中输出随机值</span>
+<span class="n">matrix2</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">truncated_normal</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+
+<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+    <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">())</span>
+    <span class="n">m1</span><span class="o">=</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">matrix1</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;m1的值是</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">m1</span><span class="p">))</span>
+    <span class="n">m2</span><span class="o">=</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">matrix2</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;m2的值是</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">m2</span><span class="p">))</span>
+    <span class="n">output</span><span class="o">=</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">matrix_mul</span><span class="p">,</span><span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">var_matrix_1</span><span class="p">:</span><span class="n">m1</span><span class="p">,</span><span class="n">var_matrix_2</span><span class="p">:</span><span class="n">m2</span><span class="p">})</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;矩阵乘法的结果是</span><span class="se">\n</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">output</span><span class="p">))</span>
+    
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>m1的值是
+[[-0.9469458  -1.0637448  -0.9293784 ]
+ [-1.1452185  -0.06935152 -1.7329748 ]]
+
+m2的值是
+[[ 0.7995693  -1.5922078 ]
+ [-0.25059786  0.28382644]
+ [ 1.2194905  -0.37946603]]
+
+矩阵乘法的结果是
+[[-1.6239448  1.5584831]
+ [-3.0116487  2.461347 ]]
 </pre>
 </div>
 </div>
@@ -1287,28 +1395,35 @@ h6:hover .anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>下面实现一个稍复杂一点的使用变量的例子，同时引入tf.assign的用法</p>
+<h2 id="fetch">fetch<a class="anchor-link" href="#fetch">&#182;</a></h2><p>Fetch操作是指TensorFlow的session可以一次run多个op
+语法: 将多个op放入数组中然后传给run方法</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">var3</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-<span class="c1">#平方op</span>
-<span class="n">square_op</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">var3</span><span class="p">)</span>
-<span class="c1">#赋值op，将square_op代表的值赋给var3，在计算图中不能直接用等号赋值</span>
-<span class="n">assign_op</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">var3</span><span class="p">,</span><span class="n">square_op</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">input1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="mf">3.0</span><span class="p">)</span>
+<span class="n">input2</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="mf">2.0</span><span class="p">)</span>
+<span class="n">input3</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="mf">5.0</span><span class="p">)</span>
 
-<span class="n">init</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">()</span>
+<span class="c1">#定义两个op</span>
+<span class="n">add</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">input2</span><span class="p">,</span> <span class="n">input3</span><span class="p">)</span>
+<span class="n">mu1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">input1</span><span class="p">,</span> <span class="n">add</span><span class="p">)</span>
+
 <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
-    <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">init</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
-        <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">assign_op</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">var3</span><span class="p">))</span>
+    <span class="c1">#一次操作两个op, 按顺序返回结果</span>
+    <span class="c1">#分别fetch到多个变量中</span>
+    <span class="n">result1</span><span class="p">,</span><span class="n">result2</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">((</span><span class="n">mu1</span><span class="p">,</span> <span class="n">add</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">result1</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">result2</span><span class="p">)</span>
+    <span class="c1">#将结果fetch到一个数组中</span>
+    <span class="n">result3</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">mu1</span><span class="p">,</span> <span class="n">add</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">result3</span><span class="p">)</span>
+                               
 </pre></div>
 
     </div>
@@ -1325,9 +1440,9 @@ h6:hover .anchor-link {
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>4
-16
-256
+<pre>21.0
+7.0
+[21.0, 7.0]
 </pre>
 </div>
 </div>
