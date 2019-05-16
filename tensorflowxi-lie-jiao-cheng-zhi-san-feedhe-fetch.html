@@ -2,7 +2,7 @@
 <html lang="chinese (simplified)">
 <head>
 
-        <title>python设计模式之一-单例模式</title>
+        <title>tensorflow系列教程之三：feed和fetch</title>
         <meta charset="utf-8" />
 
 
@@ -48,8 +48,8 @@
               <ul class="columns">
                 <li><a href="/">首页</a></li>
 
-                  <li><a href="/category/ji-qi-xue-xi.html">机器学习</a></li>
-                  <li class="active"><a href="/category/pythonji-chu.html">python基础</a></li>
+                  <li class="active"><a href="/category/ji-qi-xue-xi.html">机器学习</a></li>
+                  <li><a href="/category/pythonji-chu.html">python基础</a></li>
                   <li><a href="/category/xiao-ji-qiao.html">小技巧</a></li>
 
               </ul>
@@ -63,12 +63,12 @@
 
             <header>
                 <h4 class="entry-title">
-                    <a href="/pythonshe-ji-mo-shi-zhi-yi-dan-li-mo-shi.html" rel="bookmark" title="Permalink to python设计模式之一-单例模式">python设计模式之一-单例模式</a></h4>
+                    <a href="/tensorflowxi-lie-jiao-cheng-zhi-san-feedhe-fetch.html" rel="bookmark" title="Permalink to tensorflow系列教程之三：feed和fetch">tensorflow系列教程之三：feed和fetch</a></h4>
                 
             </header>
             <footer class="post-info">
-                <abbr class="published" title="2018-12-10T00:00:00+01:00">
-                    2018-12-10&nbsp;&nbsp;
+                <abbr class="published" title="2019-05-16T00:00:00+02:00">
+                    2019-05-16&nbsp;&nbsp;
                     <!-- <address class="vcard author"> -->
                         By&nbsp;&nbsp;
                         <a class="url fn" href="/author/wanzhouyi.html"> wanzhouyi</a>
@@ -1229,55 +1229,132 @@ h6:hover .anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="&#24341;&#35328;">&#24341;&#35328;<a class="anchor-link" href="#&#24341;&#35328;">&#182;</a></h3><p>在面向对象的世界里，对象是对客观事物的抽象，类是对对象的抽象。它们之间的关系是，对象是类的实例，类是对象的模板。</p>
-<p>这段文字表述起来费劲，理解起来也费劲，还是讲生活中的例子吧。比如说“大河”，一联想到这个词，不同的人脑海中的印象是不一样的，有的是“大漠孤烟直，长河落日圆”，有的是“春江潮水连海平，海上明月共潮生”，有的是“星垂平野阔，月涌大江流”。在这个例子中，大河可以认为是一个类，大河具有所有河流的共性特征，如有河堤，有长度，会流向大海等特性，而几句诗中的“石羊河”、“浏阳河”、“长江”等分别是大河的一个实例化对象。</p>
-<p>在大河的例子中，一个大河类可以有多个不同的实例。可是，我们今天的主角-单例模式，应用单例模式的类却只能有一个实例。</p>
-<p>比如我们常见的操作系统的任务管理器，它就是一个单例模式的实现。</p>
-<h3 id="&#23450;&#20041;">&#23450;&#20041;<a class="anchor-link" href="#&#23450;&#20041;">&#182;</a></h3><p>单例模式（singleton pattern):确保一个类只有一个实例，而且自行实例化并向整个系统提供这个实例。
-这个定义有三个要点</p>
-<ol>
-<li>某个类只能有一个实例</li>
-<li>类应当自行创建这个实例</li>
-<li>它必须向整个系统提供这个实例</li>
-</ol>
-<h3 id="UML&#32467;&#26500;">UML&#32467;&#26500;<a class="anchor-link" href="#UML&#32467;&#26500;">&#182;</a></h3><p><img src="https://raw.githubusercontent.com/wanzhouyi/wanzhouyi.github.io/master/images/20181208designpattern/1_singleton.PNG" alt="singleton uml">
-角色：单例本身</p>
-<h3 id="&#20248;&#32570;&#28857;">&#20248;&#32570;&#28857;<a class="anchor-link" href="#&#20248;&#32570;&#28857;">&#182;</a></h3><h5 id="&#20248;&#28857;">&#20248;&#28857;<a class="anchor-link" href="#&#20248;&#28857;">&#182;</a></h5><ol>
-<li>应用单例模式实例化类在应用程序域中只存在一个对象，满足业务需要的同时，无疑也能降低内存消耗，提高计算机性能。</li>
-<li>由于实例化的过程由类本身完成，可方便地选择实例时机。  </li>
-</ol>
-<h5 id="&#32570;&#28857;">&#32570;&#28857;<a class="anchor-link" href="#&#32570;&#28857;">&#182;</a></h5><ol>
-<li>由于单例模式通常为单一类且不允许继承，所以它的扩展能力受限。</li>
-<li>由于上一点的原因，单例类通常承载了过多的职能，违反了单一职责原则。</li>
-</ol>
-<h3 id="&#23454;&#20363;">&#23454;&#20363;<a class="anchor-link" href="#&#23454;&#20363;">&#182;</a></h3><p>Lilei和Hanmeimei经过多年的爱情长跑，终于迈入婚姻的殿堂。婚后不久，就有了爱情的结晶，小朋友名叫LittleMango。</p>
+<p>本文主要了解tensorflow中feed和fetch的用法。</p>
+<h2 id="feed">feed<a class="anchor-link" href="#feed">&#182;</a></h2><p>在tensorflow中，为了节约内存，可以使用placeholder来声明一个占位符，声明时不分配内存，使用时才分配。对于数据量很大的计算图，这样可以提升运算性能。而如果在运行时分配内存呢，就是使用feed了，顾名思义，feed就是将值填充进占位符。</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">SingletonBase</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">=</span><span class="kc">None</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">=</span><span class="nb">super</span><span class="p">(</span><span class="n">SingletonBase</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__call__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span>
-    
-<span class="k">class</span> <span class="nc">LittleMango</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">SingletonBase</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">show_my_age</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;I</span><span class="se">\&#39;</span><span class="s1">m 5 years old&#39;</span><span class="p">)</span>
-        
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">s1</span><span class="o">=</span><span class="n">LittleMango</span><span class="p">()</span>
-    <span class="n">s2</span><span class="o">=</span><span class="n">LittleMango</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;s1:&#39;</span><span class="p">,</span><span class="nb">id</span><span class="p">(</span><span class="n">s1</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;s2:&#39;</span><span class="p">,</span><span class="nb">id</span><span class="p">(</span><span class="n">s2</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#例一：一个简单的placeholder和feed，输出“hello tensorflow”</span>
+
+<span class="c1">#定义一个字符串类型的placeholder</span>
+<span class="n">var_str</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">string</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+    <span class="n">output</span><span class="o">=</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">var_str</span><span class="p">,</span><span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">var_str</span><span class="p">:</span><span class="s2">&quot;hello tensorflow&quot;</span><span class="p">})</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>hello tensorflow
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#例二：浮点数乘积示例</span>
+
+<span class="c1">#定义两个浮点数类型的placeholder</span>
+<span class="n">var_mul_1</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">var_mul_2</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="c1">#定义一个乘法op</span>
+<span class="n">mul</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">var_mul_1</span><span class="p">,</span><span class="n">var_mul_2</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+    <span class="n">output</span><span class="o">=</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">mul</span><span class="p">,</span><span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">var_mul_1</span><span class="p">:</span><span class="mf">2.</span><span class="p">,</span><span class="n">var_mul_2</span><span class="p">:</span><span class="mf">3.</span><span class="p">})</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>6.0
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#例三：矩阵乘法</span>
+
+<span class="c1">#定义两个矩阵</span>
+<span class="n">var_matrix_1</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span><span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">var_matrix_2</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span><span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+
+<span class="c1">#定义矩阵乘法</span>
+<span class="n">matrix_mul</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">var_matrix_1</span><span class="p">,</span><span class="n">var_matrix_2</span><span class="p">)</span>
+
+<span class="c1">#tf.random_normal 从正态分布中输出随机值</span>
+<span class="n">matrix1</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">random_normal</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+<span class="c1">#tf.truncated_normal 从截断的正态分布中输出随机值</span>
+<span class="n">matrix2</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">truncated_normal</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+
+<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+    <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">())</span>
+    <span class="n">m1</span><span class="o">=</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">matrix1</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;m1的值是</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">m1</span><span class="p">))</span>
+    <span class="n">m2</span><span class="o">=</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">matrix2</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;m2的值是</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">m2</span><span class="p">))</span>
+    <span class="n">output</span><span class="o">=</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">matrix_mul</span><span class="p">,</span><span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">var_matrix_1</span><span class="p">:</span><span class="n">m1</span><span class="p">,</span><span class="n">var_matrix_2</span><span class="p">:</span><span class="n">m2</span><span class="p">})</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;矩阵乘法的结果是</span><span class="se">\n</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">output</span><span class="p">))</span>
     
 </pre></div>
 
@@ -1295,8 +1372,18 @@ h6:hover .anchor-link {
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>s1: 800311678008
-s2: 800311678008
+<pre>m1的值是
+[[-0.9469458  -1.0637448  -0.9293784 ]
+ [-1.1452185  -0.06935152 -1.7329748 ]]
+
+m2的值是
+[[ 0.7995693  -1.5922078 ]
+ [-0.25059786  0.28382644]
+ [ 1.2194905  -0.37946603]]
+
+矩阵乘法的结果是
+[[-1.6239448  1.5584831]
+ [-3.0116487  2.461347 ]]
 </pre>
 </div>
 </div>
@@ -1308,10 +1395,61 @@ s2: 800311678008
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>通过上面的实例，我们看见s1和s2引用了同一个内存地址，这样，我们就实现了单例模式。在项目应用中，如果把SingletonBase封装起来，需要实现单例模式的地方继承此类即可。</p>
+<h2 id="fetch">fetch<a class="anchor-link" href="#fetch">&#182;</a></h2><p>Fetch操作是指TensorFlow的session可以一次run多个op
+语法: 将多个op放入数组中然后传给run方法</p>
 
 </div>
 </div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">input1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="mf">3.0</span><span class="p">)</span>
+<span class="n">input2</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="mf">2.0</span><span class="p">)</span>
+<span class="n">input3</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="mf">5.0</span><span class="p">)</span>
+
+<span class="c1">#定义两个op</span>
+<span class="n">add</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">input2</span><span class="p">,</span> <span class="n">input3</span><span class="p">)</span>
+<span class="n">mu1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">input1</span><span class="p">,</span> <span class="n">add</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+    <span class="c1">#一次操作两个op, 按顺序返回结果</span>
+    <span class="c1">#分别fetch到多个变量中</span>
+    <span class="n">result1</span><span class="p">,</span><span class="n">result2</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">((</span><span class="n">mu1</span><span class="p">,</span> <span class="n">add</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">result1</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">result2</span><span class="p">)</span>
+    <span class="c1">#将结果fetch到一个数组中</span>
+    <span class="n">result3</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">mu1</span><span class="p">,</span> <span class="n">add</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">result3</span><span class="p">)</span>
+                               
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>21.0
+7.0
+[21.0, 7.0]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
  
 
@@ -1355,8 +1493,8 @@ s2: 800311678008
 
 <h4>文章</h4>
  <ul class="blank">
-        <li><a href="/category/ji-qi-xue-xi.html">机器学习</a></li>
-        <li class="active"><a href="/category/pythonji-chu.html">python基础</a></li>
+        <li class="active"><a href="/category/ji-qi-xue-xi.html">机器学习</a></li>
+        <li><a href="/category/pythonji-chu.html">python基础</a></li>
         <li><a href="/category/xiao-ji-qiao.html">小技巧</a></li>
   </ul> -->
 
