@@ -179,7 +179,8 @@ h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
     color: #3498DB;
 }
 
-a, a:hover { color: #3498DB; }
+a { color: #241725; }
+a:hover { color: rgb(238, 34, 160); }
 a:focus { color: #34495E; }
 
 .btn a:hover, 
