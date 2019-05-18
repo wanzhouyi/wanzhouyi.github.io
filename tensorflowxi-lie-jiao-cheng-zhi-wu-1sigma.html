@@ -2,7 +2,7 @@
 <html lang="chinese (simplified)">
 <head>
 
-        <title>windows版本nginx帮助文档</title>
+        <title>tensorflow系列教程之五(1)：sigma</title>
         <meta charset="utf-8" />
 
 
@@ -48,9 +48,9 @@
               <ul class="columns">
                 <li><a href="/">首页</a></li>
 
-                  <li><a href="/category/ji-qi-xue-xi.html">机器学习</a></li>
+                  <li class="active"><a href="/category/ji-qi-xue-xi.html">机器学习</a></li>
                   <li><a href="/category/pythonji-chu.html">python基础</a></li>
-                  <li class="active"><a href="/category/xiao-ji-qiao.html">小技巧</a></li>
+                  <li><a href="/category/xiao-ji-qiao.html">小技巧</a></li>
 
               </ul>
             </div>
@@ -63,12 +63,12 @@
 
             <header>
                 <h4 class="entry-title">
-                    <a href="/windowsban-ben-nginxbang-zhu-wen-dang.html" rel="bookmark" title="Permalink to windows版本nginx帮助文档">windows版本nginx帮助文档</a></h4>
+                    <a href="/tensorflowxi-lie-jiao-cheng-zhi-wu-1sigma.html" rel="bookmark" title="Permalink to tensorflow系列教程之五(1)：sigma">tensorflow系列教程之五(1)：sigma</a></h4>
                 
             </header>
             <footer class="post-info">
-                <abbr class="published" title="2018-11-07T00:00:00+01:00">
-                    2018-11-07&nbsp;&nbsp;
+                <abbr class="published" title="2019-05-19T00:00:00+02:00">
+                    2019-05-19&nbsp;&nbsp;
                     <!-- <address class="vcard author"> -->
                         By&nbsp;&nbsp;
                         <a class="url fn" href="/author/wanzhouyi.html"> wanzhouyi</a>
@@ -1229,7 +1229,9 @@ h6:hover .anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>本文是nginx官方文档的直译。<a href="http://nginx.org/en/docs/windows.html">原文链接</a></p>
+<p>∑ (求和符号）<br>
+英语名称：Sigma<br>
+汉语名称：西格玛（大写Σ，小写σ）</p>
 
 </div>
 </div>
@@ -1237,7 +1239,15 @@ h6:hover .anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>nginx的windows版本使用原生的win32API。当前只使用了select()连接处理方法，因此不应认为它有高性能和具有可伸缩性。由于众所周知的原因，windows版本的nginx通常被认为是beta版本。但是，它几乎提供了unix版本一样的功能（xslt过滤器、图像过滤器等模块除外）。</p>
+$$\sum_{i=0}^{n}=x_0+x_1 + x_2+……+x_n$$
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>∑是数学中常用的用于多项式求和的符号。如上面的公式所示，∑下面的小字,i=0表示从i=0开始求和，上面的小字，如n表示求和到n为止。
+例如1+2+3+4+......+100=5050可以写成：</p>
 
 </div>
 </div>
@@ -1245,83 +1255,7 @@ h6:hover .anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>要安装windows版本的nginx，首先下载主干分支（<a href="http://nginx.org/en/download.html">下载地址</a>）的发布版本，然后解压启动。本文 以下载目录为C盘根目录为例：</p>
-
-<pre><code>cd c:\  
-unzip nginx-1.15.6.zip  
-cd nginx-1.15.6  
-start nginx</code></pre>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>运行tasklist命令查看当前启动的进程：</p>
-<p>C:\nginx-1.15.6&gt;tasklist /fi "imagename eq nginx.exe"</p>
-<p><table>
-    <tr>
-        <td>Image Name</td>
-        <td>PID </td>
-        <td>Session Name</td>
-        <td>Session# </td>
-        <td>Mem Usage</td>
-    <tr>
-        <tr>
-        <td>nginx.exe</td>
-        <td>652 </td>
-        <td>Console</td>
-        <td>0</td>
-        <td>2 780 K</td>
-    <tr>
-        <tr>
-        <td>nginx.exe</td>
-        <td>1332 </td>
-        <td>Console</td>
-        <td>0</td>
-        <td>3 112 K</td>
-    <tr>
-</table><br>
-这两个进程中有一个是主进程，另外一个是工作进程。如果nginx未启动，查看logs文件夹下的error.log文件。如果日志文件还没创建，则异常日志应当会记录在windows事件中。如果出现异常页面，也是通过日志文件来定位问题。</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>nginx是一个标准的控制台应用程序（注意不是一个服务），可以通过以下命令来管理nginx:</p>
-<table>
-    <tr>
-        <td>nginx -s stop</td>
-        <td>停止</td>
-    </tr>
-    <tr>
-        <td>nginx -s quit</td>
-        <td>退出</td>
-    </tr>
-    <tr>
-        <td>nginx -s reload</td>
-        <td>修改配置后，此命令关闭原进程，使用新的配置启动新的进程。</td>
-    </tr>
-    <tr>
-        <td>nginx -s reopen</td>
-        <td>重新打开日志文件</td>
-    </tr>
-</table>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h5 id="&#24050;&#30693;&#38382;&#39064;&#65306;">&#24050;&#30693;&#38382;&#39064;&#65306;<a class="anchor-link" href="#&#24050;&#30693;&#38382;&#39064;&#65306;">&#182;</a></h5><ul>
-<li>虽然可以启动多个工作线程，但实际上只有一个在工作。</li>
-<li>一个工作线程最大支持1024个并发连接。</li>
-<li>不支持UDP代理功能。</li>
-</ul>
-
+$$\sum_{i=1}^{100}=1+2+3+……+100$$
 </div>
 </div>
 </div>
@@ -1367,9 +1301,9 @@ start nginx</code></pre>
 
 <h4>文章</h4>
  <ul class="blank">
-        <li><a href="/category/ji-qi-xue-xi.html">机器学习</a></li>
+        <li class="active"><a href="/category/ji-qi-xue-xi.html">机器学习</a></li>
         <li><a href="/category/pythonji-chu.html">python基础</a></li>
-        <li class="active"><a href="/category/xiao-ji-qiao.html">小技巧</a></li>
+        <li><a href="/category/xiao-ji-qiao.html">小技巧</a></li>
   </ul> -->
 
 <h4>分类</h4>
