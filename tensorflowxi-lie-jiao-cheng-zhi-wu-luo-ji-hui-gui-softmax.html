@@ -2,7 +2,7 @@
 <html lang="chinese (simplified)">
 <head>
 
-        <title>关于python中的yield</title>
+        <title>tensorflow系列教程之五：逻辑回归-softmax</title>
         <meta charset="utf-8" />
 
 
@@ -48,8 +48,8 @@
               <ul class="columns">
                 <li><a href="/">首页</a></li>
 
-                  <li><a href="/category/ji-qi-xue-xi.html">机器学习</a></li>
-                  <li class="active"><a href="/category/pythonji-chu.html">python基础</a></li>
+                  <li class="active"><a href="/category/ji-qi-xue-xi.html">机器学习</a></li>
+                  <li><a href="/category/pythonji-chu.html">python基础</a></li>
                   <li><a href="/category/xiao-ji-qiao.html">小技巧</a></li>
 
               </ul>
@@ -63,12 +63,12 @@
 
             <header>
                 <h4 class="entry-title">
-                    <a href="/guan-yu-pythonzhong-de-yield.html" rel="bookmark" title="Permalink to 关于python中的yield">关于python中的yield</a></h4>
+                    <a href="/tensorflowxi-lie-jiao-cheng-zhi-wu-luo-ji-hui-gui-softmax.html" rel="bookmark" title="Permalink to tensorflow系列教程之五：逻辑回归-softmax">tensorflow系列教程之五：逻辑回归-softmax</a></h4>
                 
             </header>
             <footer class="post-info">
-                <abbr class="published" title="2018-10-24T00:00:00+02:00">
-                    2018-10-24&nbsp;&nbsp;
+                <abbr class="published" title="2019-05-21T00:00:00+02:00">
+                    2019-05-21&nbsp;&nbsp;
                     <!-- <address class="vcard author"> -->
                         By&nbsp;&nbsp;
                         <a class="url fn" href="/author/wanzhouyi.html"> wanzhouyi</a>
@@ -1229,37 +1229,150 @@ h6:hover .anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="yield&#34920;&#36798;&#24335;">yield&#34920;&#36798;&#24335;<a class="anchor-link" href="#yield&#34920;&#36798;&#24335;">&#182;</a></h3><p>yield表达式在定义生成器或异步生成器函数时使用，它只能在函数的内部使用。一旦在函数体中使用了yield，则函数会变成生成器。</p>
-
+<h3 id="&#23450;&#20041;">&#23450;&#20041;<a class="anchor-link" href="#&#23450;&#20041;">&#182;</a></h3><p>在数学，尤其是概率论和相关领域中，Softmax函数，或称归一化指数函数，是逻辑函数的一种推广。
+Softmax函数实际上是有限项离散概率分布的梯度对数归一化。</p>
+<h3 id="&#20844;&#24335;">&#20844;&#24335;<a class="anchor-link" href="#&#20844;&#24335;">&#182;</a></h3>$$\sigma(z)_{j}=\frac{e^{z_j}}{\sum_{k=1}^ke^{z_k}}$$<p>其中 j = 1, …, k<br>
+在多项逻辑回归和线性判别分析中，函数的输入是从K个不同的线性函数得到的结果，而样本向量 x 属于第 j 个分类的概率为：
+$$P(y=j|X)=\frac{e^{X^TW_j}}{\sum_{k=1}^ke^{X^TW_k}}$$<br>
+这可以被视作K个线性函数的复合</p>
+<h3 id="python&#23454;&#29616;">python&#23454;&#29616;<a class="anchor-link" href="#python&#23454;&#29616;">&#182;</a></h3>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">gen</span><span class="p">():</span>  <span class="c1"># defines a generator function</span>
-    <span class="k">yield</span> <span class="mi">123</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="k">def</span> <span class="nf">softmax</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="c1">#转换成numpy数组</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="c1">#求e的x次幂</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;e的x次幂是&quot;</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;x的维度是&quot;</span><span class="p">,</span><span class="n">x</span><span class="o">.</span><span class="n">ndim</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">ndim</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">sumcol</span><span class="o">=</span><span class="nb">sum</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+           <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">sumcol</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">x</span><span class="o">.</span><span class="n">ndim</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">sumcol</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
+           <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+            <span class="n">row</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">sumcol</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">x</span>
 
-<span class="k">async</span> <span class="k">def</span> <span class="nf">agen</span><span class="p">():</span> <span class="c1"># defines an asynchronous generator function (PEP 525)</span>
-    <span class="k">yield</span> <span class="mi">123</span>
+<span class="c1">#测试数据</span>
+<span class="n">scores</span> <span class="o">=</span> <span class="p">[</span><span class="mf">3.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;测试结果是&quot;</span><span class="p">,</span><span class="n">softmax</span><span class="p">(</span><span class="n">scores</span><span class="p">))</span>
+
+<span class="c1">#图像化展示</span>
+<span class="n">softmax_inputs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;softmax函数输入是</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">softmax_inputs</span><span class="p">))</span>
+
+<span class="n">softmax_outputs</span><span class="o">=</span><span class="n">softmax</span><span class="p">(</span><span class="n">softmax_inputs</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;softmax函数输出是</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">softmax_outputs</span><span class="p">))</span>
+
+<span class="c1">#将输入和输出绘制出来</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">softmax_inputs</span><span class="p">,</span><span class="n">softmax_outputs</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;softmax_inputs&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;softmax_outputs&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>e的x次幂是 [20.08553692  2.71828183  1.22140276]
+x的维度是 1
+测试结果是 [0.8360188  0.11314284 0.05083836]
+softmax函数输入是[-10  -9  -8  -7  -6  -5  -4  -3  -2  -1   0   1   2   3   4   5   6   7
+   8   9]
+e的x次幂是 [4.53999298e-05 1.23409804e-04 3.35462628e-04 9.11881966e-04
+ 2.47875218e-03 6.73794700e-03 1.83156389e-02 4.97870684e-02
+ 1.35335283e-01 3.67879441e-01 1.00000000e+00 2.71828183e+00
+ 7.38905610e+00 2.00855369e+01 5.45981500e+01 1.48413159e+02
+ 4.03428793e+02 1.09663316e+03 2.98095799e+03 8.10308393e+03]
+x的维度是 1
+softmax函数输出是[3.54164282e-09 9.62718333e-09 2.61693975e-08 7.11357977e-08
+ 1.93367146e-07 5.25626400e-07 1.42880069e-06 3.88388295e-06
+ 1.05574885e-05 2.86982290e-05 7.80098745e-05 2.12052824e-04
+ 5.76419339e-04 1.56687021e-03 4.25919483e-03 1.15776919e-02
+ 3.14714295e-02 8.55482150e-02 2.32544158e-01 6.32120560e-01]
+</pre>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>yield 的作用就是把gen()变成一个generator，带有 yield 的gen()不再是一个普通函数，Python 解释器会将其视为一个 generator，调用生成器不会执行函数，而是返回一个 iterable 对象。原对象就被保存起来，继续往下执行。
-这样带来的好处是在循环中不会占用较多的内存。
-由于作用域问题，在python3.7版本之后不再推荐使用。</p>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+"
+>
+</div>
+
+</div>
 
 </div>
 </div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#实现方式2</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="k">def</span> <span class="nf">softmax</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+ <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+ 
+<span class="c1">#测试结果</span>
+<span class="n">scores</span> <span class="o">=</span> <span class="p">[</span><span class="mf">3.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">softmax</span><span class="p">(</span><span class="n">scores</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[0.8360188  0.11314284 0.05083836]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
  
 
@@ -1303,8 +1416,8 @@ h6:hover .anchor-link {
 
 <h4>文章</h4>
  <ul class="blank">
-        <li><a href="/category/ji-qi-xue-xi.html">机器学习</a></li>
-        <li class="active"><a href="/category/pythonji-chu.html">python基础</a></li>
+        <li class="active"><a href="/category/ji-qi-xue-xi.html">机器学习</a></li>
+        <li><a href="/category/pythonji-chu.html">python基础</a></li>
         <li><a href="/category/xiao-ji-qiao.html">小技巧</a></li>
   </ul> -->
 
