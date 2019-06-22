@@ -2,7 +2,7 @@
 <html lang="chinese (simplified)">
 <head>
 
-        <title>tensorflow系列教程之五：数学知识-sigma</title>
+        <title>漫谈项目管理之二：十个人一个项目</title>
         <meta charset="utf-8" />
 
 
@@ -49,10 +49,10 @@
               <ul class="columns">
                 <li><a href="/">首页</a></li>
 
-                  <li class="active"><a href="/category/ji-qi-xue-xi.html">机器学习</a></li>
+                  <li><a href="/category/ji-qi-xue-xi.html">机器学习</a></li>
                   <li><a href="/category/pythonan-quan.html">python安全</a></li>
                   <li><a href="/category/pythonji-chu.html">python基础</a></li>
-                  <li><a href="/category/xiang-mu-guan-li.html">项目管理</a></li>
+                  <li class="active"><a href="/category/xiang-mu-guan-li.html">项目管理</a></li>
                   <li><a href="/category/xiao-ji-qiao.html">小技巧</a></li>
 
               </ul>
@@ -66,12 +66,12 @@
 
             <header>
                 <h4 class="entry-title">
-                    <a href="/tensorflowxi-lie-jiao-cheng-zhi-wu-shu-xue-zhi-shi-sigma.html" rel="bookmark" title="Permalink to tensorflow系列教程之五：数学知识-sigma">tensorflow系列教程之五：数学知识-sigma</a></h4>
+                    <a href="/man-tan-xiang-mu-guan-li-zhi-er-shi-ge-ren-yi-ge-xiang-mu.html" rel="bookmark" title="Permalink to 漫谈项目管理之二：十个人一个项目">漫谈项目管理之二：十个人一个项目</a></h4>
                 
             </header>
             <footer class="post-info">
-                <abbr class="published" title="2019-05-18T00:00:00+02:00">
-                    2019-05-18&nbsp;&nbsp;
+                <abbr class="published" title="2019-06-23T00:00:00+02:00">
+                    2019-06-23&nbsp;&nbsp;
                     <!-- <address class="vcard author"> -->
                         By&nbsp;&nbsp;
                         <a class="url fn" href="/author/wanzhouyi.html"> wanzhouyi</a>
@@ -1232,33 +1232,29 @@ h6:hover .anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>∑ (求和符号）<br>
-英语名称：Sigma<br>
-汉语名称：西格玛（大写Σ，小写σ）</p>
+<h5 id="&#25104;&#21151;&#30340;V1&#29256;&#26412;">&#25104;&#21151;&#30340;V1&#29256;&#26412;<a class="anchor-link" href="#&#25104;&#21151;&#30340;V1&#29256;&#26412;">&#182;</a></h5><p>上文《漫谈项目管理之一：一个人一个项目》中，小Z通过自己强大的的开发能力和自我管理能力，两周时间内开发出了R产品的第一个版本，并且由于团队BOSS们强大的运营能力和汇报能力，先后在全球几个实验室成功通过了试用。这个结果让BOSS们很是意外和开心，信心满满，准备大干一场。</p>
+<p>大W：这次的版本很成功，通过这次急行军也证明了你的能力。<br>
+小Z：多谢领导信任和栽培，版本匆忙，还有许多需要改进的地方。<br>
+大W：不否认，产品中还有很多问题，需要进一步进行版本优化。大领导对我们前期取得的成果较为满意，对产品的走向也有了更清晰的认识，接下来会对产品加大投资。所以我们计划成立一个新的小组，十人左右的规模，持续的对R产品进行投入。小Z呀，你是否有意向来带领这个新团队？<br>
+小Z咽了咽口水，欣然地接受了新的角色。</p>
+<h5 id="&#23567;Z&#30340;&#36716;&#36523;">&#23567;Z&#30340;&#36716;&#36523;<a class="anchor-link" href="#&#23567;Z&#30340;&#36716;&#36523;">&#182;</a></h5><p>小Z第一件事是筹备团队。由于自己也有很强的技术能力，那就把SE（架构师）也兼职干了；测试总是要是要的吧，那先来一个，要求能够做功能测试，安全测试，要是有自动化测试能力就完美了；R产品可以分为两个模块，那就招两个技术实力较强的MDE（模块开发师），每个MDE带三个DE（开发）。经过一番心理活动，小Z把团队的能力模型构建了出来，还是一个有梯度的团队。<br>
+团队模型定了，就交给招聘部门去找人了。小Z一边面试新人，一边与业务部门启动沟通。与业务部门沟通的内容包含两部分，一部分是关于沟通渠道的建立，一部分是版本的规划以及具体需求的分析。建立沟通渠道的过程小Z特别留心了这几点:</p>
+<ul>
+<li>干系人的识别。了解谁对产品比较在意，产品的成败会影响谁？产品的细节谁会关注？每位干系人对产品的态度是什么？  </li>
+<li>沟通的方式。如何确定需求？需求沟通的方式（邮件确认什么的）？需求的评审过程等等……</li>
+<li>分歧的处理。双方意见不合时如何管控分歧？分歧或问题上升的通道是什么？最后裁决的方式等等……  </li>
+</ul>
+<p>小Z搞定了需求方，又找到了大W，对于内部管理比如质量指标、安全检查、CI（持续集成和自动构建）等等内部约束进行了梳理。小Z希望把团队建设成一个高效的团队，把产品演化成一个有很多人用的产品。<br>
+对于没有实际管理经验的小Z来说，也就能想到这些了。
+小Z的项目磕磕绊绊的往前推进着，小Z学到的管理经验也越来越多，思考问题也越来越全面。</p>
+<h5 id="&#23567;Z&#30340;&#24635;&#32467;">&#23567;Z&#30340;&#24635;&#32467;<a class="anchor-link" href="#&#23567;Z&#30340;&#24635;&#32467;">&#182;</a></h5><ol>
+<li>十人左右的小团队，Leader通常是项目或产品交付的第一责任人，很多由开发转身的PL初期并不太适应。一旦开始转身，承担交付责任时，PL就得时刻关注计划与进度，质量和风险了。</li>
+<li>小团队通常不会有专职的架构师，PL一般也是技术带头人，负责产品的技术选型，技术问题抉择，以及核心代码的开发。</li>
+<li>PL作为团队对外沟通的桥梁，需要负责周边事务的协同。如产品之间的依赖、异系统的对接等</li>
+<li>PL还是团队建设的主导者，保证团队成员的稳定性，激发员工的潜能，确保大家目标一致  </li>
+</ol>
+<h5 id="&#23567;Z&#30340;&#22256;&#24785;">&#23567;Z&#30340;&#22256;&#24785;<a class="anchor-link" href="#&#23567;Z&#30340;&#22256;&#24785;">&#182;</a></h5><p>在实际的产品开发中，小Z花费了大量的时间在做沟通协调、任务跟踪等项目管理活动上，技术上的成长几乎停滞。小Z意识到这个问题时，充满了困惑。且听下回分解。</p>
 
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-$$\sum_{i=0}^{n}=x_0+x_1 + x_2+……+x_n$$
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>∑是数学中常用的用于多项式求和的符号。如上面的公式所示，∑下面的小字,i=0表示从i=0开始求和，上面的小字，如n表示求和到n为止。
-例如1+2+3+4+......+100=5050可以写成：</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-$$\sum_{i=1}^{100}=1+2+3+……+100$$
 </div>
 </div>
 </div>
@@ -1296,7 +1292,7 @@ $$\sum_{i=1}^{100}=1+2+3+……+100$$
 
             </div><!-- /.entry-content -->
 
-            <span style="color: transparent" id="/tensorflowxi-lie-jiao-cheng-zhi-wu-shu-xue-zhi-shi-sigma.html" class="leancloud-visitors" data-flag-title="Your Article Title">
+            <span style="color: transparent" id="/man-tan-xiang-mu-guan-li-zhi-er-shi-ge-ren-yi-ge-xiang-mu.html" class="leancloud-visitors" data-flag-title="Your Article Title">
                 <em class="post-meta-item-text">阅读量 </em>
                 <i class="leancloud-visitors-count"></i>
             </span>
@@ -1320,10 +1316,10 @@ $$\sum_{i=1}^{100}=1+2+3+……+100$$
 
 <h4>文章</h4>
  <ul class="blank">
-        <li class="active"><a href="/category/ji-qi-xue-xi.html">机器学习</a></li>
+        <li><a href="/category/ji-qi-xue-xi.html">机器学习</a></li>
         <li><a href="/category/pythonan-quan.html">python安全</a></li>
         <li><a href="/category/pythonji-chu.html">python基础</a></li>
-        <li><a href="/category/xiang-mu-guan-li.html">项目管理</a></li>
+        <li class="active"><a href="/category/xiang-mu-guan-li.html">项目管理</a></li>
         <li><a href="/category/xiao-ji-qiao.html">小技巧</a></li>
   </ul> -->
 
