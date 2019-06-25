@@ -2,7 +2,7 @@
 <html lang="chinese (simplified)">
 <head>
 
-        <title>python中的poplib模块详解</title>
+        <title>python安全开发军规之二：防止中间人攻击</title>
         <meta charset="utf-8" />
 
 
@@ -50,8 +50,8 @@
                 <li><a href="/">首页</a></li>
 
                   <li><a href="/category/ji-qi-xue-xi.html">机器学习</a></li>
-                  <li><a href="/category/pythonan-quan.html">python安全</a></li>
-                  <li class="active"><a href="/category/pythonji-chu.html">python基础</a></li>
+                  <li class="active"><a href="/category/pythonan-quan.html">python安全</a></li>
+                  <li><a href="/category/pythonji-chu.html">python基础</a></li>
                   <li><a href="/category/xiang-mu-guan-li.html">项目管理</a></li>
                   <li><a href="/category/xiao-ji-qiao.html">小技巧</a></li>
 
@@ -66,12 +66,12 @@
 
             <header>
                 <h4 class="entry-title">
-                    <a href="/pythonzhong-de-poplibmo-kuai-xiang-jie.html" rel="bookmark" title="Permalink to python中的poplib模块详解">python中的poplib模块详解</a></h4>
+                    <a href="/pythonan-quan-kai-fa-jun-gui-zhi-er-fang-zhi-zhong-jian-ren-gong-ji.html" rel="bookmark" title="Permalink to python安全开发军规之二：防止中间人攻击">python安全开发军规之二：防止中间人攻击</a></h4>
                 
             </header>
             <footer class="post-info">
-                <abbr class="published" title="2018-10-30T00:00:00+01:00">
-                    2018-10-30&nbsp;&nbsp;
+                <abbr class="published" title="2019-06-26T00:00:00+02:00">
+                    2019-06-26&nbsp;&nbsp;
                     <!-- <address class="vcard author"> -->
                         By&nbsp;&nbsp;
                         <a class="url fn" href="/author/wanzhouyi.html"> wanzhouyi</a>
@@ -1232,73 +1232,21 @@ h6:hover .anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>获取邮件主要有两种方式，一种是通过pop3，一种是通过imap。pop3协议相对来说简单，本章先讲如何用pop3收取邮件。
-pop3全称是Post Office Protocol - Version 3，即pop协议的第三个版本。提供了SSL加密的POP3协议被称为POP3S。典型的通信过程如下：</p>
-<ol>
-<li>用户启动客户端</li>
-<li>客户端与邮件服务器建立TCP连接，默认端口是110</li>
-<li>客户端向邮件服务器发送POP操作命令，如查询。具体的命令见后文</li>
-<li>邮件服务器解析命令并执行相应操作，最后返回结果给客户端</li>
-<li>客户端收到邮件服务器返回的结果并解析成用户可以阅读的形式</li>
-</ol>
-<table>
-    <tr><td>命令</td><td>描述</td></tr>
-    <tr><td>USER</td><td>用户名</td></tr>
-    <tr><td>PASS</td><td>用户密码</td></tr>
-    <tr><td>APOP</td><td>MD5消息摘要</td></tr>
-    <tr><td>STAT</td><td>请求邮箱的统计数据，如邮件总数</td></tr>
-    <tr><td>UIDL</td><td>返回邮件的唯一标识符</td></tr>
-    <tr><td>LIST</td><td>返回邮件数量和每个邮件的大小</td></tr>
-    <tr><td>RETR</td><td>返回由参数标识的邮件的全部文本</td></tr>
-    <tr><td>DELE</td><td>将参数标识的邮件标记为删除，由quit命令执行</td></tr>
-    <tr><td>RSET</td><td>重置所有标记为删除的邮件，用于撤消DELE命令</td></tr>
-    <tr><td>TOP</td><td>返回由参数标识的邮件前n行内容，n必须是正整数</td></tr>
-    <tr><td>NOOP</td><td>服务器返回一个肯定的响应</td></tr>
-    <tr><td>QUIT</td><td>终止会话</td></tr>
-</table><p>POP3协议中有三种状态，认证状态，处理状态，和更新状态。命令的执行可以改变协议的状态，而对于具体的某命令，它只能在具体的状态下使用。客户机与服务器刚与服务器建立连接时，它的状态为认证状态；一旦客户机提供了自己身份并被成功地确认，即由认可状态转入处理状态； 在完成相应的操作后客户机发出QUIT命令（具体说明见后续内容），则进入更新状态，更新之后又重返认可状态；当然在认可状态下执行QUIT命令，可释放连接。</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>python的内建库中提供了poplib用于使用pop3协议进行邮件操作。<a href="https://docs.python.org/3/library/poplib.html">传送门</a></p>
-<p>poplib模块提供了两个类：</p>
-<ol>
-<li>class poplib.POP3（host，port = POP3_PORT [，timeout ] ）
- 该类实现了实际的POP3协议。初始化实例时会创建连接。如果省略端口，则使用标准POP3端口（110）。可选的timeout参数指定连接尝试的超时（以秒为单位）（如果未指定，将使用全局默认超时设置）。</li>
-<li>class poplib.POP3_SSL（host，port = POP3_SSL_PORT，keyfile = None，certfile = None，timeout = None，context = None ）
- 这是POP3通过SSL加密套接字连接到服务器的子类。如果未指定端口 995，则使用标准的POP3-over-SSL端口。 超时在POP3构造函数中起作用。 context是一个可选ssl.SSLContext对象，它允许将SSL配置选项，证书和私钥绑定到单个（可能是长期存在的）结构中。keyfile和certfile是上下文的传统替代方案- 它们可以分别指向用于SSL连接的PEM格式的私钥和证书链文件。</li>
-</ol>
-<p>由于126的邮箱默认是支持POP3的，所以本文以126邮箱为例</p>
-
+<h5 id="&#32972;&#26223;">&#32972;&#26223;<a class="anchor-link" href="#&#32972;&#26223;">&#182;</a></h5><p>当我们在做开发的时候，很多时候都需要抓取我们收发的数据包，比如android开发的时候，我会在本地打开fiddler，查看app的所有http请求；有的时候为了调试方便，还会修改hosts文件，将某一域名指向特定的IP……在前面两个例子中，其实是中间人攻击（man in the middle attack，简称MITM）两种常用手段，第一种是代理劫持，第二种是DNS劫持，随着网络技术的发展，还出现了很多其它的中间人攻击手段。</p>
+<h5 id="&#26222;&#36890;&#31243;&#24207;&#21592;&#30340;&#20889;&#27861;">&#26222;&#36890;&#31243;&#24207;&#21592;&#30340;&#20889;&#27861;<a class="anchor-link" href="#&#26222;&#36890;&#31243;&#24207;&#21592;&#30340;&#20889;&#27861;">&#182;</a></h5>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">poplib</span>
-<span class="n">uname</span><span class="o">=</span><span class="s1">&#39;*****&#39;</span>
-<span class="n">upwd</span><span class="o">=</span><span class="s1">&#39;*****&#39;</span>
-<span class="n">M</span><span class="o">=</span><span class="n">poplib</span><span class="o">.</span><span class="n">POP3</span><span class="p">(</span><span class="s1">&#39;pop.126.com&#39;</span><span class="p">)</span><span class="c1">#与服务器建立TCP连接</span>
-<span class="n">res_user_cmd</span><span class="o">=</span><span class="n">M</span><span class="o">.</span><span class="n">user</span><span class="p">(</span><span class="n">uname</span><span class="p">)</span><span class="c1">#发送用户命令，返回应指示需要发送密码</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;user 命令的返回值是：</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">res_user_cmd</span><span class="p">))</span>
-<span class="n">res_pass_cmd</span><span class="o">=</span><span class="n">M</span><span class="o">.</span><span class="n">pass_</span><span class="p">(</span><span class="n">upwd</span><span class="p">)</span><span class="c1">#发送密码命令，返回邮件封数和邮箱大小</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;pass 命令的返回值是：</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">res_pass_cmd</span><span class="p">))</span>
-<span class="n">res_stat_cmd</span><span class="o">=</span><span class="n">M</span><span class="o">.</span><span class="n">stat</span><span class="p">()</span><span class="c1">#获取邮箱状态。结果是2个整数的元组：。(message count, mailbox size)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;stat 命令的返回值中message count 是</span><span class="si">{}</span><span class="s1">,邮箱大小是</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">res_stat_cmd</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">res_stat_cmd</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
-<span class="n">ret</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">list</span><span class="p">()</span><span class="c1"># 列出服务器上邮件信息，这个会对每一封邮件都输出id和大小，形如 b&#39;1366 16325&#39;。不象stat输出的是总的统计信息</span>
-<span class="n">res_first_mail</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">retr</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="c1"># 取第一封邮件完整信息</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;第一封邮件的行数是</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">res_first_mail</span><span class="p">)))</span>
-
-<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">res_first_mail</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
-    <span class="c1"># 输出邮件</span>
-    <span class="k">pass</span>
-<span class="n">M</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">urllib3</span>
+<span class="n">urllib3</span><span class="o">.</span><span class="n">disable_warnings</span><span class="p">()</span>
+<span class="n">response</span><span class="o">=</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://randomuser.me/api/&#39;</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -1315,43 +1263,35 @@ pop3全称是Post Office Protocol - Version 3，即pop协议的第三个版本�
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>user 命令的返回值是：b&#39;+OK core mail&#39;
-pass 命令的返回值是：b&#39;+OK 1367 message(s) [331756844 byte(s)]&#39;
-stat 命令的返回值中message count 是1367,邮箱大小是331756844
-第一封邮件的行数是3
+<pre>{&#34;results&#34;:[{&#34;gender&#34;:&#34;male&#34;,&#34;name&#34;:{&#34;title&#34;:&#34;mr&#34;,&#34;first&#34;:&#34;clifton&#34;,&#34;last&#34;:&#34;holmes&#34;},&#34;location&#34;:{&#34;street&#34;:&#34;8035 victoria road&#34;,&#34;city&#34;:&#34;kingston upon hull&#34;,&#34;state&#34;:&#34;dorset&#34;,&#34;postcode&#34;:&#34;M5 7TF&#34;,&#34;coordinates&#34;:{&#34;latitude&#34;:&#34;11.7838&#34;,&#34;longitude&#34;:&#34;-4.3395&#34;},&#34;timezone&#34;:{&#34;offset&#34;:&#34;+2:00&#34;,&#34;description&#34;:&#34;Kaliningrad, South Africa&#34;}},&#34;email&#34;:&#34;clifton.holmes@example.com&#34;,&#34;login&#34;:{&#34;uuid&#34;:&#34;268ce64b-261b-4f8d-a849-2c9df6c5deff&#34;,&#34;username&#34;:&#34;brownmeercat231&#34;,&#34;password&#34;:&#34;liverpool&#34;,&#34;salt&#34;:&#34;jyfT0FYl&#34;,&#34;md5&#34;:&#34;a2288b18510a39d3587da4c7a9cf356a&#34;,&#34;sha1&#34;:&#34;f15f99dbfda2b9557f465886727cef271ac012cd&#34;,&#34;sha256&#34;:&#34;14a9be291a3169a973e025a11cdd6ff4705ce30fe12d9b553d3c2e9d15245229&#34;},&#34;dob&#34;:{&#34;date&#34;:&#34;1986-04-24T08:41:51Z&#34;,&#34;age&#34;:33},&#34;registered&#34;:{&#34;date&#34;:&#34;2011-10-01T05:51:15Z&#34;,&#34;age&#34;:7},&#34;phone&#34;:&#34;016973 84729&#34;,&#34;cell&#34;:&#34;0793-654-443&#34;,&#34;id&#34;:{&#34;name&#34;:&#34;NINO&#34;,&#34;value&#34;:&#34;GM 65 05 50 I&#34;},&#34;picture&#34;:{&#34;large&#34;:&#34;https://randomuser.me/api/portraits/men/82.jpg&#34;,&#34;medium&#34;:&#34;https://randomuser.me/api/portraits/med/men/82.jpg&#34;,&#34;thumbnail&#34;:&#34;https://randomuser.me/api/portraits/thumb/men/82.jpg&#34;},&#34;nat&#34;:&#34;GB&#34;}],&#34;info&#34;:{&#34;seed&#34;:&#34;cadfce3bcdc5fe91&#34;,&#34;results&#34;:1,&#34;page&#34;:1,&#34;version&#34;:&#34;1.2&#34;}}
 </pre>
 </div>
 </div>
 
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[3]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>b&#39;+OK core mail&#39;</pre>
-</div>
-
-</div>
-
 </div>
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>程序运行良好，完美地实现了所需要的功能，不是吗？</p>
+<h5 id="QA&#26377;&#35805;&#35828;">QA&#26377;&#35805;&#35828;<a class="anchor-link" href="#QA&#26377;&#35805;&#35828;">&#182;</a></h5><p>是的，程序运行得没错？可是代码中有两处安全问题，一是将 verify 设置为 False，使Requests 忽略了对 SSL 证书的验证；二是隐藏了urllib3抛出的证书校验失败的警告。这样做的后果是极有可能被中间人攻击，会话的安全性得不到保障。如果有中间人对通信过程中的数据进行了嗅探和篡改，你的程序却会毫不知情。虽然在开发阶段由于条件限制不能正确配置证书，也不能忽略警告，也不能忽略证书校验。</p>
+<h5 id="&#39640;&#32423;&#31243;&#24207;&#21592;&#30340;&#20889;&#27861;">&#39640;&#32423;&#31243;&#24207;&#21592;&#30340;&#20889;&#27861;<a class="anchor-link" href="#&#39640;&#32423;&#31243;&#24207;&#21592;&#30340;&#20889;&#27861;">&#182;</a></h5><p>可以为 verify 传入 CA_BUNDLE 文件的路径，或者包含可信任 CA 证书文件的文件夹路径：</p>
 
-    </div>
+<pre><code>requests.get('https://github.com', verify='/path/to/certfile')  
+
+</code></pre>
+<p>也可以将其保持在会话中：</p>
+
+<pre><code>s = requests.Session()
+s.verify = '/path/to/certfile' #如果 verify 设为文件夹路径，文件夹必须通过 OpenSSL 提供的 c_rehash 工具处理。
+
+</code></pre>
+<p>还可以通过 REQUESTS_CA_BUNDLE 环境变量定义可信任 CA 列表。</p>
+
 </div>
 </div>
-
 </div>
  
 
@@ -1387,7 +1327,7 @@ stat 命令的返回值中message count 是1367,邮箱大小是331756844
 
             </div><!-- /.entry-content -->
 
-            <span style="color: transparent" id="/pythonzhong-de-poplibmo-kuai-xiang-jie.html" class="leancloud-visitors" data-flag-title="Your Article Title">
+            <span style="color: transparent" id="/pythonan-quan-kai-fa-jun-gui-zhi-er-fang-zhi-zhong-jian-ren-gong-ji.html" class="leancloud-visitors" data-flag-title="Your Article Title">
                 <em class="post-meta-item-text">阅读量 </em>
                 <i class="leancloud-visitors-count"></i>
             </span>
@@ -1412,8 +1352,8 @@ stat 命令的返回值中message count 是1367,邮箱大小是331756844
 <h4>文章</h4>
  <ul class="blank">
         <li><a href="/category/ji-qi-xue-xi.html">机器学习</a></li>
-        <li><a href="/category/pythonan-quan.html">python安全</a></li>
-        <li class="active"><a href="/category/pythonji-chu.html">python基础</a></li>
+        <li class="active"><a href="/category/pythonan-quan.html">python安全</a></li>
+        <li><a href="/category/pythonji-chu.html">python基础</a></li>
         <li><a href="/category/xiang-mu-guan-li.html">项目管理</a></li>
         <li><a href="/category/xiao-ji-qiao.html">小技巧</a></li>
   </ul> -->
