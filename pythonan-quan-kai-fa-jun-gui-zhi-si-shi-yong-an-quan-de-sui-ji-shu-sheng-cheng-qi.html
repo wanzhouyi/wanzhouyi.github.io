@@ -2,7 +2,7 @@
 <html lang="chinese (simplified)">
 <head>
 
-        <title>python安全开发军规之二：防止中间人攻击</title>
+        <title>python安全开发军规之四：使用安全的随机数生成器</title>
         <meta charset="utf-8" />
 
 
@@ -66,12 +66,12 @@
 
             <header>
                 <h4 class="entry-title">
-                    <a href="/pythonan-quan-kai-fa-jun-gui-zhi-er-fang-zhi-zhong-jian-ren-gong-ji.html" rel="bookmark" title="Permalink to python安全开发军规之二：防止中间人攻击">python安全开发军规之二：防止中间人攻击</a></h4>
+                    <a href="/pythonan-quan-kai-fa-jun-gui-zhi-si-shi-yong-an-quan-de-sui-ji-shu-sheng-cheng-qi.html" rel="bookmark" title="Permalink to python安全开发军规之四：使用安全的随机数生成器">python安全开发军规之四：使用安全的随机数生成器</a></h4>
                 
             </header>
             <footer class="post-info">
-                <abbr class="published" title="2019-06-26T00:00:00+02:00">
-                    2019-06-26&nbsp;&nbsp;
+                <abbr class="published" title="2019-06-28T00:00:00+02:00">
+                    2019-06-28&nbsp;&nbsp;
                     <!-- <address class="vcard author"> -->
                         By&nbsp;&nbsp;
                         <a class="url fn" href="/author/wanzhouyi.html"> wanzhouyi</a>
@@ -1232,21 +1232,18 @@ h6:hover .anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h5 id="&#32972;&#26223;">&#32972;&#26223;<a class="anchor-link" href="#&#32972;&#26223;">&#182;</a></h5><p>当我们在做开发的时候，很多时候都需要抓取我们收发的数据包，比如android开发的时候，我会在本地打开fiddler，查看app的所有http请求；有的时候为了调试方便，还会修改hosts文件，将某一域名指向特定的IP……在前面两个例子中，其实是中间人攻击（man in the middle attack，简称MITM）两种常用手段，第一种是代理劫持，第二种是DNS劫持，随着网络技术的发展，还出现了很多其它的中间人攻击手段。</p>
+<h5 id="&#32972;&#26223;">&#32972;&#26223;<a class="anchor-link" href="#&#32972;&#26223;">&#182;</a></h5><p>日常开发中，必然会碰到需要生成随机数的需求，比如生成图片验证码，短信验证码……随机数生成既然是这么简单的一个功能，开发必然也很简单，我们看看怎么生成一个随机数，这里以随机生成1-100的整数为例。</p>
 <h5 id="&#26222;&#36890;&#31243;&#24207;&#21592;&#30340;&#20889;&#27861;">&#26222;&#36890;&#31243;&#24207;&#21592;&#30340;&#20889;&#27861;<a class="anchor-link" href="#&#26222;&#36890;&#31243;&#24207;&#21592;&#30340;&#20889;&#27861;">&#182;</a></h5>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
-<span class="kn">import</span> <span class="nn">urllib3</span>
-<span class="n">urllib3</span><span class="o">.</span><span class="n">disable_warnings</span><span class="p">()</span>
-<span class="n">response</span><span class="o">=</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://randomuser.me/api/&#39;</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
+<span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -1259,13 +1256,15 @@ h6:hover .anchor-link {
 
 <div class="output_area">
 
-    <div class="prompt"></div>
+    <div class="prompt output_prompt">Out[7]:</div>
 
 
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>{&#34;results&#34;:[{&#34;gender&#34;:&#34;male&#34;,&#34;name&#34;:{&#34;title&#34;:&#34;mr&#34;,&#34;first&#34;:&#34;clifton&#34;,&#34;last&#34;:&#34;holmes&#34;},&#34;location&#34;:{&#34;street&#34;:&#34;8035 victoria road&#34;,&#34;city&#34;:&#34;kingston upon hull&#34;,&#34;state&#34;:&#34;dorset&#34;,&#34;postcode&#34;:&#34;M5 7TF&#34;,&#34;coordinates&#34;:{&#34;latitude&#34;:&#34;11.7838&#34;,&#34;longitude&#34;:&#34;-4.3395&#34;},&#34;timezone&#34;:{&#34;offset&#34;:&#34;+2:00&#34;,&#34;description&#34;:&#34;Kaliningrad, South Africa&#34;}},&#34;email&#34;:&#34;clifton.holmes@example.com&#34;,&#34;login&#34;:{&#34;uuid&#34;:&#34;268ce64b-261b-4f8d-a849-2c9df6c5deff&#34;,&#34;username&#34;:&#34;brownmeercat231&#34;,&#34;password&#34;:&#34;liverpool&#34;,&#34;salt&#34;:&#34;jyfT0FYl&#34;,&#34;md5&#34;:&#34;a2288b18510a39d3587da4c7a9cf356a&#34;,&#34;sha1&#34;:&#34;f15f99dbfda2b9557f465886727cef271ac012cd&#34;,&#34;sha256&#34;:&#34;14a9be291a3169a973e025a11cdd6ff4705ce30fe12d9b553d3c2e9d15245229&#34;},&#34;dob&#34;:{&#34;date&#34;:&#34;1986-04-24T08:41:51Z&#34;,&#34;age&#34;:33},&#34;registered&#34;:{&#34;date&#34;:&#34;2011-10-01T05:51:15Z&#34;,&#34;age&#34;:7},&#34;phone&#34;:&#34;016973 84729&#34;,&#34;cell&#34;:&#34;0793-654-443&#34;,&#34;id&#34;:{&#34;name&#34;:&#34;NINO&#34;,&#34;value&#34;:&#34;GM 65 05 50 I&#34;},&#34;picture&#34;:{&#34;large&#34;:&#34;https://randomuser.me/api/portraits/men/82.jpg&#34;,&#34;medium&#34;:&#34;https://randomuser.me/api/portraits/med/men/82.jpg&#34;,&#34;thumbnail&#34;:&#34;https://randomuser.me/api/portraits/thumb/men/82.jpg&#34;},&#34;nat&#34;:&#34;GB&#34;}],&#34;info&#34;:{&#34;seed&#34;:&#34;cadfce3bcdc5fe91&#34;,&#34;results&#34;:1,&#34;page&#34;:1,&#34;version&#34;:&#34;1.2&#34;}}
-</pre>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>83</pre>
 </div>
+
 </div>
 
 </div>
@@ -1275,20 +1274,56 @@ h6:hover .anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>程序运行良好，完美地实现了所需要的功能，不是吗？</p>
-<h5 id="QA&#26377;&#35805;&#35828;">QA&#26377;&#35805;&#35828;<a class="anchor-link" href="#QA&#26377;&#35805;&#35828;">&#182;</a></h5><p>是的，程序运行得没错？可是代码中有两处安全问题，一是将 verify 设置为 False，使Requests 忽略了对 SSL 证书的验证；二是隐藏了urllib3抛出的证书校验失败的警告。这样做的后果是极有可能被中间人攻击，会话的安全性得不到保障。如果有中间人对通信过程中的数据进行了嗅探和篡改，你的程序却会毫不知情。虽然在开发阶段由于条件限制不能正确配置证书，也不能忽略警告，也不能忽略证书校验。</p>
-<h5 id="&#39640;&#32423;&#31243;&#24207;&#21592;&#30340;&#20889;&#27861;">&#39640;&#32423;&#31243;&#24207;&#21592;&#30340;&#20889;&#27861;<a class="anchor-link" href="#&#39640;&#32423;&#31243;&#24207;&#21592;&#30340;&#20889;&#27861;">&#182;</a></h5><p>可以为 verify 传入 CA_BUNDLE 文件的路径，或者包含可信任 CA 证书文件的文件夹路径：</p>
+<p>只用了两行代码，程序员小Z就写出了一个随机数。</p>
+<h5 id="QA&#26377;&#35805;&#35828;">QA&#26377;&#35805;&#35828;<a class="anchor-link" href="#QA&#26377;&#35805;&#35828;">&#182;</a></h5><p>随机模块提供的随机生成器是伪随机数生成器。所谓伪随机数，是通过固定的算法生成的，其结果是确定的，可预见的。一般情况下，伪随机数的生成需要一个种子，如果没有特别设置，种子就是系统的时钟。简而言之，由于伪随机数算法固定，种子固定，那结果就是可推导和模拟的。那这里的随机也就不是真正的随机，只要在随机数生成过程中有一点偏差，破译者就能够利用偏差对保密信息进行破译。</p>
+<p>实际上，在密码学上对随机性有三个分类：伪随机序列，密码学意义上的伪随机序列，真随机序列。</p>
+<p>前面小Z写的程序就类属于伪随机序列，1-100中每个数出现的频率相等或近似相等。</p>
+<p>而真随机序列则要求随机数不能重复产生，且不能由已知的任意数推导出来。意味着，即使在相同的操作条件下，用完全相同的输入，随机数生成器生成的两个随机数也是不一样的，即两次生成的结果是不重复的且完全独立的。</p>
+<p>由于真随机序列大多需要硬件支持，有一种折衷的方案，也就是密码学意义上的伪随机序列。密码学意义的伪随机序列要求即使知道前一次的生成，不能预测下一次生成的随机数。</p>
+<h5 id="&#39640;&#32423;&#31243;&#24207;&#21592;&#30340;&#20889;&#27861;">&#39640;&#32423;&#31243;&#24207;&#21592;&#30340;&#20889;&#27861;<a class="anchor-link" href="#&#39640;&#32423;&#31243;&#24207;&#21592;&#30340;&#20889;&#27861;">&#182;</a></h5>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">secrets</span>
+<span class="n">secret_generator</span><span class="o">=</span><span class="n">secrets</span><span class="o">.</span><span class="n">SystemRandom</span><span class="p">()</span>
+<span class="n">secret_generator</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
 
-<pre><code>requests.get('https://github.com', verify='/path/to/certfile')  
+    </div>
+</div>
+</div>
 
-</code></pre>
-<p>也可以将其保持在会话中：</p>
+<div class="output_wrapper">
+<div class="output">
 
-<pre><code>s = requests.Session()
-s.verify = '/path/to/certfile' #如果 verify 设为文件夹路径，文件夹必须通过 OpenSSL 提供的 c_rehash 工具处理。
 
-</code></pre>
-<p>还可以通过 REQUESTS_CA_BUNDLE 环境变量定义可信任 CA 列表。</p>
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[8]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>8</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="&#23567;&#32467;">&#23567;&#32467;<a class="anchor-link" href="#&#23567;&#32467;">&#182;</a></h5><p>python在3.6版本添加了secrets模块，使用同步方法生成随机数据，以确保没有两个进程可以同时获得相同的数据。<br>
+这个模块的功能很多，可以进一步发掘，常用于敏感信息保护的场景，常用的有生成随机数，从确定序列中随机取值，生成token。</p>
 
 </div>
 </div>
@@ -1327,7 +1362,7 @@ s.verify = '/path/to/certfile' #如果 verify 设为文件夹路径，文件夹�
 
             </div><!-- /.entry-content -->
 
-            <span style="color: transparent" id="/pythonan-quan-kai-fa-jun-gui-zhi-er-fang-zhi-zhong-jian-ren-gong-ji.html" class="leancloud-visitors" data-flag-title="Your Article Title">
+            <span style="color: transparent" id="/pythonan-quan-kai-fa-jun-gui-zhi-si-shi-yong-an-quan-de-sui-ji-shu-sheng-cheng-qi.html" class="leancloud-visitors" data-flag-title="Your Article Title">
                 <em class="post-meta-item-text">阅读量 </em>
                 <i class="leancloud-visitors-count"></i>
             </span>
