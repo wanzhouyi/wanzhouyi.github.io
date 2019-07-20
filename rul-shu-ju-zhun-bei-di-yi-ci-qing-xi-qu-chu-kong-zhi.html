@@ -1,0 +1,5578 @@
+<!DOCTYPE html>
+<html lang="chinese (simplified)">
+<head>
+
+        <title>RUL-数据准备-第一次清洗-去除空值</title>
+        <meta charset="utf-8" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="/theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="/theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="/theme/pygment.css" />
+
+        <script src="/theme/js/libs/modernizr-2.6.2.min.js"></script>
+        <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+        <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+
+
+
+        <script>
+          var _hmt = _hmt || [];
+          (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?07b3dc56d1493bc6368798c428cd3f9c";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+          })();
+          </script>
+          
+              
+      </head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+                  <h1><a href="/">芒果python <strong></strong></a></h1>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="/">首页</a></li>
+
+                  <li class="active"><a href="/category/ji-qi-xue-xi.html">机器学习</a></li>
+                  <li><a href="/category/pythonan-quan.html">python安全</a></li>
+                  <li><a href="/category/pythonji-chu.html">python基础</a></li>
+                  <li><a href="/category/xiang-mu-guan-li.html">项目管理</a></li>
+                  <li><a href="/category/xiao-ji-qiao.html">小技巧</a></li>
+
+              </ul>
+            </div>
+
+<section id="content" class="body">
+
+    <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+                <h4 class="entry-title">
+                    <a href="/rul-shu-ju-zhun-bei-di-yi-ci-qing-xi-qu-chu-kong-zhi.html" rel="bookmark" title="Permalink to RUL-数据准备-第一次清洗-去除空值">RUL-数据准备-第一次清洗-去除空值</a></h4>
+                
+            </header>
+            <footer class="post-info">
+                <abbr class="published" title="2019-07-21T00:00:00+02:00">
+                    2019-07-21&nbsp;&nbsp;
+                    <!-- <address class="vcard author"> -->
+                        By&nbsp;&nbsp;
+                        <a class="url fn" href="/author/wanzhouyi.html"> wanzhouyi</a>
+                    <!-- </address> -->
+                </abbr>
+
+            </footer><!-- /.post-info -->
+            <div class="entry-content">
+                <style type="text/css">/*!
+*
+* IPython notebook
+*
+*/
+/* CSS font colors for translated ANSI escape sequences */
+/* The color values are a mix of
+   http://www.xcolors.net/dl/baskerville-ivorylight and
+   http://www.xcolors.net/dl/euphrasia */
+.ansi-black-fg {
+  color: #3E424D;
+}
+.ansi-black-bg {
+  background-color: #3E424D;
+}
+.ansi-black-intense-fg {
+  color: #282C36;
+}
+.ansi-black-intense-bg {
+  background-color: #282C36;
+}
+.ansi-red-fg {
+  color: #E75C58;
+}
+.ansi-red-bg {
+  background-color: #E75C58;
+}
+.ansi-red-intense-fg {
+  color: #B22B31;
+}
+.ansi-red-intense-bg {
+  background-color: #B22B31;
+}
+.ansi-green-fg {
+  color: #00A250;
+}
+.ansi-green-bg {
+  background-color: #00A250;
+}
+.ansi-green-intense-fg {
+  color: #007427;
+}
+.ansi-green-intense-bg {
+  background-color: #007427;
+}
+.ansi-yellow-fg {
+  color: #DDB62B;
+}
+.ansi-yellow-bg {
+  background-color: #DDB62B;
+}
+.ansi-yellow-intense-fg {
+  color: #B27D12;
+}
+.ansi-yellow-intense-bg {
+  background-color: #B27D12;
+}
+.ansi-blue-fg {
+  color: #208FFB;
+}
+.ansi-blue-bg {
+  background-color: #208FFB;
+}
+.ansi-blue-intense-fg {
+  color: #0065CA;
+}
+.ansi-blue-intense-bg {
+  background-color: #0065CA;
+}
+.ansi-magenta-fg {
+  color: #D160C4;
+}
+.ansi-magenta-bg {
+  background-color: #D160C4;
+}
+.ansi-magenta-intense-fg {
+  color: #A03196;
+}
+.ansi-magenta-intense-bg {
+  background-color: #A03196;
+}
+.ansi-cyan-fg {
+  color: #60C6C8;
+}
+.ansi-cyan-bg {
+  background-color: #60C6C8;
+}
+.ansi-cyan-intense-fg {
+  color: #258F8F;
+}
+.ansi-cyan-intense-bg {
+  background-color: #258F8F;
+}
+.ansi-white-fg {
+  color: #C5C1B4;
+}
+.ansi-white-bg {
+  background-color: #C5C1B4;
+}
+.ansi-white-intense-fg {
+  color: #A1A6B2;
+}
+.ansi-white-intense-bg {
+  background-color: #A1A6B2;
+}
+.ansi-default-inverse-fg {
+  color: #FFFFFF;
+}
+.ansi-default-inverse-bg {
+  background-color: #000000;
+}
+.ansi-bold {
+  font-weight: bold;
+}
+.ansi-underline {
+  text-decoration: underline;
+}
+/* The following styles are deprecated an will be removed in a future version */
+.ansibold {
+  font-weight: bold;
+}
+.ansi-inverse {
+  outline: 0.5px dotted;
+}
+/* use dark versions for foreground, to improve visibility */
+.ansiblack {
+  color: black;
+}
+.ansired {
+  color: darkred;
+}
+.ansigreen {
+  color: darkgreen;
+}
+.ansiyellow {
+  color: #c4a000;
+}
+.ansiblue {
+  color: darkblue;
+}
+.ansipurple {
+  color: darkviolet;
+}
+.ansicyan {
+  color: steelblue;
+}
+.ansigray {
+  color: gray;
+}
+/* and light for background, for the same reason */
+.ansibgblack {
+  background-color: black;
+}
+.ansibgred {
+  background-color: red;
+}
+.ansibggreen {
+  background-color: green;
+}
+.ansibgyellow {
+  background-color: yellow;
+}
+.ansibgblue {
+  background-color: blue;
+}
+.ansibgpurple {
+  background-color: magenta;
+}
+.ansibgcyan {
+  background-color: cyan;
+}
+.ansibggray {
+  background-color: gray;
+}
+div.cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  width: 100%;
+  padding: 5px;
+  /* This acts as a spacer between cells, that is outside the border */
+  margin: 0px;
+  outline: none;
+  position: relative;
+  overflow: visible;
+}
+div.cell:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: transparent;
+}
+div.cell.jupyter-soft-selected {
+  border-left-color: #E3F2FD;
+  border-left-width: 1px;
+  padding-left: 5px;
+  border-right-color: #E3F2FD;
+  border-right-width: 1px;
+  background: #E3F2FD;
+}
+@media print {
+  div.cell.jupyter-soft-selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected,
+div.cell.selected.jupyter-soft-selected {
+  border-color: #ababab;
+}
+div.cell.selected:before,
+div.cell.selected.jupyter-soft-selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #42A5F5;
+}
+@media print {
+  div.cell.selected,
+  div.cell.selected.jupyter-soft-selected {
+    border-color: transparent;
+  }
+}
+.edit_mode div.cell.selected {
+  border-color: #66BB6A;
+}
+.edit_mode div.cell.selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #66BB6A;
+}
+@media print {
+  .edit_mode div.cell.selected {
+    border-color: transparent;
+  }
+}
+.prompt {
+  /* This needs to be wide enough for 3 digit prompt numbers: In[100]: */
+  min-width: 14ex;
+  /* This padding is tuned to match the padding on the CodeMirror editor. */
+  padding: 0.4em;
+  margin: 0px;
+  font-family: monospace;
+  text-align: right;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+  /* Don't highlight prompt number selection */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Use default cursor */
+  cursor: default;
+}
+@media (max-width: 540px) {
+  .prompt {
+    text-align: left;
+  }
+}
+div.inner_cell {
+  min-width: 0;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_area {
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  background: #f7f7f7;
+  line-height: 1.21429em;
+}
+/* This is needed so that empty prompt areas can collapse to zero height when there
+   is no content in the output_subarea and the prompt. The main purpose of this is
+   to make sure that empty JavaScript output_subareas have no height. */
+div.prompt:empty {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+div.unrecognized_cell {
+  padding: 5px 5px 5px 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.unrecognized_cell .inner_cell {
+  border-radius: 2px;
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+  border: 1px solid #cfcfcf;
+  background: #eaeaea;
+}
+div.unrecognized_cell .inner_cell a {
+  color: inherit;
+  text-decoration: none;
+}
+div.unrecognized_cell .inner_cell a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+@media (max-width: 540px) {
+  div.unrecognized_cell > div.prompt {
+    display: none;
+  }
+}
+div.code_cell {
+  /* avoid page breaking on code cells when printing */
+}
+@media print {
+  div.code_cell {
+    page-break-inside: avoid;
+  }
+}
+/* any special styling for code cells that are currently running goes here */
+div.input {
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.input {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_prompt {
+  color: #303F9F;
+  border-top: 1px solid transparent;
+}
+div.input_area > div.highlight {
+  margin: 0.4em;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+div.input_area > div.highlight > pre {
+  margin: 0px;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+/* The following gets added to the <head> if it is detected that the user has a
+ * monospace font with inconsistent normal/bold/italic height.  See
+ * notebookmain.js.  Such fonts will have keywords vertically offset with
+ * respect to the rest of the text.  The user should select a better font.
+ * See: https://github.com/ipython/ipython/issues/1503
+ *
+ * .CodeMirror span {
+ *      vertical-align: bottom;
+ * }
+ */
+.CodeMirror {
+  line-height: 1.21429em;
+  /* Changed from 1em to our global default */
+  font-size: 14px;
+  height: auto;
+  /* Changed to auto to autogrow */
+  background: none;
+  /* Changed from white to allow our bg to show through */
+}
+.CodeMirror-scroll {
+  /*  The CodeMirror docs are a bit fuzzy on if overflow-y should be hidden or visible.*/
+  /*  We have found that if it is visible, vertical scrollbars appear with font size changes.*/
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+.CodeMirror-lines {
+  /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
+  /* we have set a different line-height and want this to scale with that. */
+  /* Note that this should set vertical padding only, since CodeMirror assumes
+       that horizontal padding will be set on CodeMirror pre */
+  padding: 0.4em 0;
+}
+.CodeMirror-linenumber {
+  padding: 0 8px 0 4px;
+}
+.CodeMirror-gutters {
+  border-bottom-left-radius: 2px;
+  border-top-left-radius: 2px;
+}
+.CodeMirror pre {
+  /* In CM3 this went to 4px from 0 in CM2. This sets horizontal padding only,
+    use .CodeMirror-lines for vertical */
+  padding: 0 0.4em;
+  border: 0;
+  border-radius: 0;
+}
+.CodeMirror-cursor {
+  border-left: 1.4px solid black;
+}
+@media screen and (min-width: 2138px) and (max-width: 4319px) {
+  .CodeMirror-cursor {
+    border-left: 2px solid black;
+  }
+}
+@media screen and (min-width: 4320px) {
+  .CodeMirror-cursor {
+    border-left: 4px solid black;
+  }
+}
+/*
+
+Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
+Adapted from GitHub theme
+
+*/
+.highlight-base {
+  color: #000;
+}
+.highlight-variable {
+  color: #000;
+}
+.highlight-variable-2 {
+  color: #1a1a1a;
+}
+.highlight-variable-3 {
+  color: #333333;
+}
+.highlight-string {
+  color: #BA2121;
+}
+.highlight-comment {
+  color: #408080;
+  font-style: italic;
+}
+.highlight-number {
+  color: #080;
+}
+.highlight-atom {
+  color: #88F;
+}
+.highlight-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.highlight-builtin {
+  color: #008000;
+}
+.highlight-error {
+  color: #f00;
+}
+.highlight-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.highlight-meta {
+  color: #AA22FF;
+}
+/* previously not defined, copying from default codemirror */
+.highlight-def {
+  color: #00f;
+}
+.highlight-string-2 {
+  color: #f50;
+}
+.highlight-qualifier {
+  color: #555;
+}
+.highlight-bracket {
+  color: #997;
+}
+.highlight-tag {
+  color: #170;
+}
+.highlight-attribute {
+  color: #00c;
+}
+.highlight-header {
+  color: blue;
+}
+.highlight-quote {
+  color: #090;
+}
+.highlight-link {
+  color: #00c;
+}
+/* apply the same style to codemirror */
+.cm-s-ipython span.cm-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-atom {
+  color: #88F;
+}
+.cm-s-ipython span.cm-number {
+  color: #080;
+}
+.cm-s-ipython span.cm-def {
+  color: #00f;
+}
+.cm-s-ipython span.cm-variable {
+  color: #000;
+}
+.cm-s-ipython span.cm-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-variable-2 {
+  color: #1a1a1a;
+}
+.cm-s-ipython span.cm-variable-3 {
+  color: #333333;
+}
+.cm-s-ipython span.cm-comment {
+  color: #408080;
+  font-style: italic;
+}
+.cm-s-ipython span.cm-string {
+  color: #BA2121;
+}
+.cm-s-ipython span.cm-string-2 {
+  color: #f50;
+}
+.cm-s-ipython span.cm-meta {
+  color: #AA22FF;
+}
+.cm-s-ipython span.cm-qualifier {
+  color: #555;
+}
+.cm-s-ipython span.cm-builtin {
+  color: #008000;
+}
+.cm-s-ipython span.cm-bracket {
+  color: #997;
+}
+.cm-s-ipython span.cm-tag {
+  color: #170;
+}
+.cm-s-ipython span.cm-attribute {
+  color: #00c;
+}
+.cm-s-ipython span.cm-header {
+  color: blue;
+}
+.cm-s-ipython span.cm-quote {
+  color: #090;
+}
+.cm-s-ipython span.cm-link {
+  color: #00c;
+}
+.cm-s-ipython span.cm-error {
+  color: #f00;
+}
+.cm-s-ipython span.cm-tab {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
+  background-position: right;
+  background-repeat: no-repeat;
+}
+div.output_wrapper {
+  /* this position must be relative to enable descendents to be absolute within it */
+  position: relative;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 1;
+}
+/* class for the output area when it should be height-limited */
+div.output_scroll {
+  /* ideally, this would be max-height, but FF barfs all over that */
+  height: 24em;
+  /* FF needs this *and the wrapper* to specify full width, or it will shrinkwrap */
+  width: 100%;
+  overflow: auto;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  display: block;
+}
+/* output div while it is collapsed */
+div.output_collapsed {
+  margin: 0px;
+  padding: 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+div.out_prompt_overlay {
+  height: 100%;
+  padding: 0px 0.4em;
+  position: absolute;
+  border-radius: 2px;
+}
+div.out_prompt_overlay:hover {
+  /* use inner shadow to get border that is computed the same on WebKit/FF */
+  -webkit-box-shadow: inset 0 0 1px #000;
+  box-shadow: inset 0 0 1px #000;
+  background: rgba(240, 240, 240, 0.5);
+}
+div.output_prompt {
+  color: #D84315;
+}
+/* This class is the outer container of all output sections. */
+div.output_area {
+  padding: 0px;
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.output_area .MathJax_Display {
+  text-align: left !important;
+}
+div.output_area 
+div.output_area 
+div.output_area img,
+div.output_area svg {
+  max-width: 100%;
+  height: auto;
+}
+div.output_area img.unconfined,
+div.output_area svg.unconfined {
+  max-width: none;
+}
+div.output_area .mglyph > img {
+  max-width: none;
+}
+/* This is needed to protect the pre formating from global settings such
+   as that of bootstrap */
+.output {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.output_area {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+div.output_area pre {
+  margin: 0;
+  padding: 1px 0 1px 0;
+  border: 0;
+  vertical-align: baseline;
+  color: black;
+  background-color: transparent;
+  border-radius: 0;
+}
+/* This class is for the output subarea inside the output_area and after
+   the prompt div. */
+div.output_subarea {
+  overflow-x: auto;
+  padding: 0.4em;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+  max-width: calc(100% - 14ex);
+}
+div.output_scroll div.output_subarea {
+  overflow-x: visible;
+}
+/* The rest of the output_* classes are for special styling of the different
+   output types */
+/* all text output has this class: */
+div.output_text {
+  text-align: left;
+  color: #000;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+}
+/* stdout/stderr are 'text' as well as 'stream', but execute_result/error are *not* streams */
+div.output_stderr {
+  background: #fdd;
+  /* very light red background for stderr */
+}
+div.output_latex {
+  text-align: left;
+}
+/* Empty output_javascript divs should have no height */
+div.output_javascript:empty {
+  padding: 0;
+}
+.js-error {
+  color: darkred;
+}
+/* raw_input styles */
+div.raw_input_container {
+  line-height: 1.21429em;
+  padding-top: 5px;
+}
+pre.raw_input_prompt {
+  /* nothing needed here. */
+}
+input.raw_input {
+  font-family: monospace;
+  font-size: inherit;
+  color: inherit;
+  width: auto;
+  /* make sure input baseline aligns with prompt */
+  vertical-align: baseline;
+  /* padding + margin = 0.5em between prompt and cursor */
+  padding: 0em 0.25em;
+  margin: 0em 0.25em;
+}
+input.raw_input:focus {
+  box-shadow: none;
+}
+p.p-space {
+  margin-bottom: 10px;
+}
+div.output_unrecognized {
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+}
+div.output_unrecognized a {
+  color: inherit;
+  text-decoration: none;
+}
+div.output_unrecognized a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+.rendered_html {
+  color: #000;
+  /* any extras will just be numbers: */
+}
+
+
+
+.rendered_html :link {
+  text-decoration: underline;
+}
+.rendered_html :visited {
+  text-decoration: underline;
+}
+
+
+
+
+
+
+.rendered_html h1:first-child {
+  margin-top: 0.538em;
+}
+.rendered_html h2:first-child {
+  margin-top: 0.636em;
+}
+.rendered_html h3:first-child {
+  margin-top: 0.777em;
+}
+.rendered_html h4:first-child {
+  margin-top: 1em;
+}
+.rendered_html h5:first-child {
+  margin-top: 1em;
+}
+.rendered_html h6:first-child {
+  margin-top: 1em;
+}
+.rendered_html ul:not(.list-inline),
+.rendered_html ol:not(.list-inline) {
+  padding-left: 2em;
+}
+
+
+
+
+
+
+
+
+.rendered_html * + ul {
+  margin-top: 1em;
+}
+.rendered_html * + ol {
+  margin-top: 1em;
+}
+
+
+
+
+
+.rendered_html pre,
+
+
+
+
+.rendered_html tr,
+.rendered_html th,
+
+
+.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+.rendered_html * + table {
+  margin-top: 1em;
+}
+
+.rendered_html * + p {
+  margin-top: 1em;
+}
+
+.rendered_html * + img {
+  margin-top: 1em;
+}
+.rendered_html img,
+
+.rendered_html img.unconfined,
+
+
+.rendered_html * + .alert {
+  margin-top: 1em;
+}
+[dir="rtl"] 
+div.text_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.text_cell > div.prompt {
+    display: none;
+  }
+}
+div.text_cell_render {
+  /*font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;*/
+  outline: none;
+  resize: none;
+  width: inherit;
+  border-style: none;
+  padding: 0.5em 0.5em 0.5em 0.4em;
+  color: #000;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+a.anchor-link:link {
+  text-decoration: none;
+  padding: 0px 20px;
+  visibility: hidden;
+}
+h1:hover .anchor-link,
+h2:hover .anchor-link,
+h3:hover .anchor-link,
+h4:hover .anchor-link,
+h5:hover .anchor-link,
+h6:hover .anchor-link {
+  visibility: visible;
+}
+.text_cell.rendered .input_area {
+  display: none;
+}
+.text_cell.rendered 
+.text_cell.rendered .rendered_html tr,
+.text_cell.rendered .rendered_html th,
+.text_cell.rendered 
+.text_cell.unrendered .text_cell_render {
+  display: none;
+}
+.text_cell .dropzone .input_area {
+  border: 2px dashed #bababa;
+  margin: -1px;
+}
+.cm-header-1,
+.cm-header-2,
+.cm-header-3,
+.cm-header-4,
+.cm-header-5,
+.cm-header-6 {
+  font-weight: bold;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.cm-header-1 {
+  font-size: 185.7%;
+}
+.cm-header-2 {
+  font-size: 157.1%;
+}
+.cm-header-3 {
+  font-size: 128.6%;
+}
+.cm-header-4 {
+  font-size: 110%;
+}
+.cm-header-5 {
+  font-size: 100%;
+  font-style: italic;
+}
+.cm-header-6 {
+  font-size: 100%;
+  font-style: italic;
+}
+</style>
+<style type="text/css">.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sa { color: #BA2121 } /* Literal.String.Affix */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #0000FF } /* Name.Function.Magic */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .vm { color: #19177C } /* Name.Variable.Magic */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
+<style type="text/css">
+/* Temporary definitions which will become obsolete with Notebook release 5.0 */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="RUL-&#25968;&#25454;&#20934;&#22791;-&#31532;&#19968;&#27425;&#28165;&#27927;-&#21435;&#38500;&#31354;&#20540;">RUL-&#25968;&#25454;&#20934;&#22791;-&#31532;&#19968;&#27425;&#28165;&#27927;-&#21435;&#38500;&#31354;&#20540;<a class="anchor-link" href="#RUL-&#25968;&#25454;&#20934;&#22791;-&#31532;&#19968;&#27425;&#28165;&#27927;-&#21435;&#38500;&#31354;&#20540;">&#182;</a></h4><p>接上节，Turbofan Engine Degradation Simulation Data Set可以从NASA官网下载，这里会用到三个数据集，分别是train_FD001、test_FD001、RUL_FD001。RUL_FD001包含真实的剩余寿命数据，而test_FD001表示我们预测的剩余寿命数据，这两个数据集合将用于对比，以确定预测的准确度。<br>
+我们先看一看这三个数据集的数据长什么样子：</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[82]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="n">train</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;D:/RUL/CMAPSSData/train_FD001.txt&#39;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">decimal</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">train</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[82]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
+      <th>6</th>
+      <th>7</th>
+      <th>8</th>
+      <th>9</th>
+      <th>...</th>
+      <th>18</th>
+      <th>19</th>
+      <th>20</th>
+      <th>21</th>
+      <th>22</th>
+      <th>23</th>
+      <th>24</th>
+      <th>25</th>
+      <th>26</th>
+      <th>27</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>1</td>
+      <td>-0.0007</td>
+      <td>-0.0004</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>641.82</td>
+      <td>1589.70</td>
+      <td>1400.60</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8138.62</td>
+      <td>8.4195</td>
+      <td>0.03</td>
+      <td>392</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>39.06</td>
+      <td>23.4190</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>2</td>
+      <td>0.0019</td>
+      <td>-0.0003</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.15</td>
+      <td>1591.82</td>
+      <td>1403.14</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8131.49</td>
+      <td>8.4318</td>
+      <td>0.03</td>
+      <td>392</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>39.00</td>
+      <td>23.4236</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>3</td>
+      <td>-0.0043</td>
+      <td>0.0003</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.35</td>
+      <td>1587.99</td>
+      <td>1404.20</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8133.23</td>
+      <td>8.4178</td>
+      <td>0.03</td>
+      <td>390</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.95</td>
+      <td>23.3442</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>4</td>
+      <td>0.0007</td>
+      <td>0.0000</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.35</td>
+      <td>1582.79</td>
+      <td>1401.87</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8133.83</td>
+      <td>8.3682</td>
+      <td>0.03</td>
+      <td>392</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.88</td>
+      <td>23.3739</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>5</td>
+      <td>-0.0019</td>
+      <td>-0.0002</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.37</td>
+      <td>1582.85</td>
+      <td>1406.22</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8133.80</td>
+      <td>8.4294</td>
+      <td>0.03</td>
+      <td>393</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.90</td>
+      <td>23.4044</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>1</td>
+      <td>6</td>
+      <td>-0.0043</td>
+      <td>-0.0001</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.10</td>
+      <td>1584.47</td>
+      <td>1398.37</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8132.85</td>
+      <td>8.4108</td>
+      <td>0.03</td>
+      <td>391</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.98</td>
+      <td>23.3669</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>1</td>
+      <td>7</td>
+      <td>0.0010</td>
+      <td>0.0001</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.48</td>
+      <td>1592.32</td>
+      <td>1397.77</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8132.32</td>
+      <td>8.3974</td>
+      <td>0.03</td>
+      <td>392</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>39.10</td>
+      <td>23.3774</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>1</td>
+      <td>8</td>
+      <td>-0.0034</td>
+      <td>0.0003</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.56</td>
+      <td>1582.96</td>
+      <td>1400.97</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8131.07</td>
+      <td>8.4076</td>
+      <td>0.03</td>
+      <td>391</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.97</td>
+      <td>23.3106</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>1</td>
+      <td>9</td>
+      <td>0.0008</td>
+      <td>0.0001</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.12</td>
+      <td>1590.98</td>
+      <td>1394.80</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8125.69</td>
+      <td>8.3728</td>
+      <td>0.03</td>
+      <td>392</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>39.05</td>
+      <td>23.4066</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>1</td>
+      <td>10</td>
+      <td>-0.0033</td>
+      <td>0.0001</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>641.71</td>
+      <td>1591.24</td>
+      <td>1400.46</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8129.38</td>
+      <td>8.4286</td>
+      <td>0.03</td>
+      <td>393</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.95</td>
+      <td>23.4694</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>1</td>
+      <td>11</td>
+      <td>0.0018</td>
+      <td>-0.0003</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.28</td>
+      <td>1581.75</td>
+      <td>1400.64</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8140.58</td>
+      <td>8.4340</td>
+      <td>0.03</td>
+      <td>392</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.94</td>
+      <td>23.4787</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>1</td>
+      <td>12</td>
+      <td>0.0016</td>
+      <td>0.0002</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.06</td>
+      <td>1583.41</td>
+      <td>1400.15</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8134.25</td>
+      <td>8.3938</td>
+      <td>0.03</td>
+      <td>391</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>39.06</td>
+      <td>23.3660</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>1</td>
+      <td>13</td>
+      <td>-0.0019</td>
+      <td>0.0004</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.07</td>
+      <td>1582.19</td>
+      <td>1400.83</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8128.10</td>
+      <td>8.4152</td>
+      <td>0.03</td>
+      <td>393</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.93</td>
+      <td>23.2757</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>1</td>
+      <td>14</td>
+      <td>0.0009</td>
+      <td>-0.0000</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.35</td>
+      <td>1592.95</td>
+      <td>1399.16</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8134.43</td>
+      <td>8.3964</td>
+      <td>0.03</td>
+      <td>393</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>39.18</td>
+      <td>23.3826</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>1</td>
+      <td>15</td>
+      <td>-0.0018</td>
+      <td>-0.0003</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.43</td>
+      <td>1583.82</td>
+      <td>1402.13</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8127.56</td>
+      <td>8.4199</td>
+      <td>0.03</td>
+      <td>391</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.99</td>
+      <td>23.3500</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>1</td>
+      <td>16</td>
+      <td>0.0006</td>
+      <td>0.0005</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.13</td>
+      <td>1587.98</td>
+      <td>1404.50</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8136.11</td>
+      <td>8.3936</td>
+      <td>0.03</td>
+      <td>392</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.97</td>
+      <td>23.4550</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>1</td>
+      <td>17</td>
+      <td>0.0002</td>
+      <td>0.0002</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.58</td>
+      <td>1584.96</td>
+      <td>1399.95</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8137.27</td>
+      <td>8.4542</td>
+      <td>0.03</td>
+      <td>392</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.81</td>
+      <td>23.3319</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>1</td>
+      <td>18</td>
+      <td>-0.0031</td>
+      <td>-0.0001</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.62</td>
+      <td>1591.04</td>
+      <td>1396.12</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8132.73</td>
+      <td>8.4028</td>
+      <td>0.03</td>
+      <td>392</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.89</td>
+      <td>23.3987</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>1</td>
+      <td>19</td>
+      <td>0.0032</td>
+      <td>-0.0003</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>641.79</td>
+      <td>1587.56</td>
+      <td>1400.35</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8129.13</td>
+      <td>8.4321</td>
+      <td>0.03</td>
+      <td>391</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.80</td>
+      <td>23.3464</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>1</td>
+      <td>20</td>
+      <td>-0.0037</td>
+      <td>0.0001</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.04</td>
+      <td>1581.11</td>
+      <td>1405.23</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8129.71</td>
+      <td>8.4210</td>
+      <td>0.03</td>
+      <td>392</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>39.03</td>
+      <td>23.4220</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>1</td>
+      <td>21</td>
+      <td>-0.0012</td>
+      <td>0.0001</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.37</td>
+      <td>1586.07</td>
+      <td>1398.13</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8134.02</td>
+      <td>8.4049</td>
+      <td>0.03</td>
+      <td>392</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>39.09</td>
+      <td>23.3101</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>1</td>
+      <td>22</td>
+      <td>0.0002</td>
+      <td>0.0000</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.77</td>
+      <td>1592.93</td>
+      <td>1400.57</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8130.41</td>
+      <td>8.4034</td>
+      <td>0.03</td>
+      <td>392</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.92</td>
+      <td>23.3792</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>1</td>
+      <td>23</td>
+      <td>0.0034</td>
+      <td>-0.0003</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.14</td>
+      <td>1588.19</td>
+      <td>1394.75</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8127.90</td>
+      <td>8.4240</td>
+      <td>0.03</td>
+      <td>392</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.94</td>
+      <td>23.4562</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>1</td>
+      <td>24</td>
+      <td>-0.0010</td>
+      <td>0.0003</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.38</td>
+      <td>1590.83</td>
+      <td>1398.81</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8133.88</td>
+      <td>8.3891</td>
+      <td>0.03</td>
+      <td>392</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>39.00</td>
+      <td>23.3696</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>1</td>
+      <td>25</td>
+      <td>0.0023</td>
+      <td>-0.0004</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.77</td>
+      <td>1594.10</td>
+      <td>1399.39</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8136.61</td>
+      <td>8.3917</td>
+      <td>0.03</td>
+      <td>393</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.95</td>
+      <td>23.4288</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>1</td>
+      <td>26</td>
+      <td>0.0000</td>
+      <td>0.0002</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.16</td>
+      <td>1589.08</td>
+      <td>1396.07</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8131.15</td>
+      <td>8.4260</td>
+      <td>0.03</td>
+      <td>394</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.86</td>
+      <td>23.4149</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>1</td>
+      <td>27</td>
+      <td>-0.0012</td>
+      <td>-0.0004</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.44</td>
+      <td>1590.47</td>
+      <td>1401.84</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8134.60</td>
+      <td>8.4046</td>
+      <td>0.03</td>
+      <td>393</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.99</td>
+      <td>23.4472</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>1</td>
+      <td>28</td>
+      <td>-0.0024</td>
+      <td>0.0005</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.35</td>
+      <td>1582.84</td>
+      <td>1399.13</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8127.30</td>
+      <td>8.4323</td>
+      <td>0.03</td>
+      <td>390</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>39.01</td>
+      <td>23.2841</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>1</td>
+      <td>29</td>
+      <td>0.0012</td>
+      <td>-0.0001</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>641.91</td>
+      <td>1584.83</td>
+      <td>1400.99</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8133.06</td>
+      <td>8.4189</td>
+      <td>0.03</td>
+      <td>393</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.93</td>
+      <td>23.3597</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>1</td>
+      <td>30</td>
+      <td>-0.0022</td>
+      <td>0.0000</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.20</td>
+      <td>1593.52</td>
+      <td>1396.08</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8137.86</td>
+      <td>8.4065</td>
+      <td>0.03</td>
+      <td>390</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>39.05</td>
+      <td>23.4110</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>20601</th>
+      <td>100</td>
+      <td>171</td>
+      <td>-0.0005</td>
+      <td>-0.0004</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.05</td>
+      <td>1593.56</td>
+      <td>1420.48</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8144.03</td>
+      <td>8.5085</td>
+      <td>0.03</td>
+      <td>396</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.81</td>
+      <td>23.1513</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>20602</th>
+      <td>100</td>
+      <td>172</td>
+      <td>-0.0037</td>
+      <td>0.0001</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.97</td>
+      <td>1602.35</td>
+      <td>1424.93</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8142.08</td>
+      <td>8.4970</td>
+      <td>0.03</td>
+      <td>394</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.49</td>
+      <td>23.1922</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>20603</th>
+      <td>100</td>
+      <td>173</td>
+      <td>0.0006</td>
+      <td>0.0004</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.40</td>
+      <td>1595.53</td>
+      <td>1418.63</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8143.13</td>
+      <td>8.4856</td>
+      <td>0.03</td>
+      <td>393</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.42</td>
+      <td>23.1793</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>20604</th>
+      <td>100</td>
+      <td>174</td>
+      <td>0.0011</td>
+      <td>0.0002</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.91</td>
+      <td>1602.24</td>
+      <td>1425.52</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8143.61</td>
+      <td>8.4990</td>
+      <td>0.03</td>
+      <td>395</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.80</td>
+      <td>23.1784</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>20605</th>
+      <td>100</td>
+      <td>175</td>
+      <td>-0.0013</td>
+      <td>-0.0005</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.85</td>
+      <td>1602.03</td>
+      <td>1416.24</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8140.88</td>
+      <td>8.4851</td>
+      <td>0.03</td>
+      <td>394</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.54</td>
+      <td>23.0713</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>20606</th>
+      <td>100</td>
+      <td>176</td>
+      <td>-0.0017</td>
+      <td>-0.0003</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.33</td>
+      <td>1601.44</td>
+      <td>1421.40</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8139.27</td>
+      <td>8.4405</td>
+      <td>0.03</td>
+      <td>396</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.46</td>
+      <td>23.1020</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>20607</th>
+      <td>100</td>
+      <td>177</td>
+      <td>-0.0011</td>
+      <td>-0.0005</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.34</td>
+      <td>1593.22</td>
+      <td>1418.91</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8142.95</td>
+      <td>8.5133</td>
+      <td>0.03</td>
+      <td>395</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.60</td>
+      <td>23.0352</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>20608</th>
+      <td>100</td>
+      <td>178</td>
+      <td>0.0005</td>
+      <td>-0.0003</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.98</td>
+      <td>1594.80</td>
+      <td>1422.69</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8141.85</td>
+      <td>8.4876</td>
+      <td>0.03</td>
+      <td>395</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.55</td>
+      <td>23.2252</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>20609</th>
+      <td>100</td>
+      <td>179</td>
+      <td>0.0020</td>
+      <td>0.0004</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.22</td>
+      <td>1599.36</td>
+      <td>1423.94</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8138.58</td>
+      <td>8.5218</td>
+      <td>0.03</td>
+      <td>396</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.62</td>
+      <td>23.1685</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>20610</th>
+      <td>100</td>
+      <td>180</td>
+      <td>-0.0010</td>
+      <td>0.0001</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.64</td>
+      <td>1595.98</td>
+      <td>1416.45</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8138.98</td>
+      <td>8.5150</td>
+      <td>0.03</td>
+      <td>395</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.54</td>
+      <td>23.2345</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>20611</th>
+      <td>100</td>
+      <td>181</td>
+      <td>0.0024</td>
+      <td>-0.0005</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.25</td>
+      <td>1597.83</td>
+      <td>1414.63</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8139.30</td>
+      <td>8.5518</td>
+      <td>0.03</td>
+      <td>396</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.52</td>
+      <td>23.1774</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>20612</th>
+      <td>100</td>
+      <td>182</td>
+      <td>0.0007</td>
+      <td>-0.0001</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.52</td>
+      <td>1604.31</td>
+      <td>1417.73</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8140.87</td>
+      <td>8.4855</td>
+      <td>0.03</td>
+      <td>396</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.41</td>
+      <td>23.1289</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>20613</th>
+      <td>100</td>
+      <td>183</td>
+      <td>-0.0011</td>
+      <td>-0.0002</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.34</td>
+      <td>1594.60</td>
+      <td>1427.27</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8144.21</td>
+      <td>8.5006</td>
+      <td>0.03</td>
+      <td>395</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.49</td>
+      <td>23.0709</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>20614</th>
+      <td>100</td>
+      <td>184</td>
+      <td>0.0027</td>
+      <td>-0.0004</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.91</td>
+      <td>1598.88</td>
+      <td>1420.89</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8142.28</td>
+      <td>8.4989</td>
+      <td>0.03</td>
+      <td>396</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.44</td>
+      <td>23.1229</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>20615</th>
+      <td>100</td>
+      <td>185</td>
+      <td>-0.0014</td>
+      <td>0.0004</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.95</td>
+      <td>1600.81</td>
+      <td>1420.34</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8142.32</td>
+      <td>8.4804</td>
+      <td>0.03</td>
+      <td>395</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.60</td>
+      <td>23.2127</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>20616</th>
+      <td>100</td>
+      <td>186</td>
+      <td>0.0026</td>
+      <td>0.0004</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.61</td>
+      <td>1593.55</td>
+      <td>1425.32</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8138.08</td>
+      <td>8.4735</td>
+      <td>0.03</td>
+      <td>394</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.51</td>
+      <td>23.1173</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>20617</th>
+      <td>100</td>
+      <td>187</td>
+      <td>0.0015</td>
+      <td>0.0002</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.63</td>
+      <td>1596.96</td>
+      <td>1421.49</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8140.49</td>
+      <td>8.5087</td>
+      <td>0.03</td>
+      <td>396</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.67</td>
+      <td>23.2308</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>20618</th>
+      <td>100</td>
+      <td>188</td>
+      <td>-0.0008</td>
+      <td>-0.0002</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.19</td>
+      <td>1597.77</td>
+      <td>1426.57</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8139.94</td>
+      <td>8.4814</td>
+      <td>0.03</td>
+      <td>395</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.36</td>
+      <td>23.0552</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>20619</th>
+      <td>100</td>
+      <td>189</td>
+      <td>0.0015</td>
+      <td>0.0001</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.69</td>
+      <td>1599.85</td>
+      <td>1423.15</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8139.78</td>
+      <td>8.4870</td>
+      <td>0.03</td>
+      <td>397</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.65</td>
+      <td>23.0591</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>20620</th>
+      <td>100</td>
+      <td>190</td>
+      <td>-0.0001</td>
+      <td>0.0002</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.12</td>
+      <td>1594.45</td>
+      <td>1426.04</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8142.28</td>
+      <td>8.5162</td>
+      <td>0.03</td>
+      <td>395</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.42</td>
+      <td>23.0603</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>20621</th>
+      <td>100</td>
+      <td>191</td>
+      <td>-0.0005</td>
+      <td>-0.0000</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.69</td>
+      <td>1610.87</td>
+      <td>1427.19</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8143.56</td>
+      <td>8.5092</td>
+      <td>0.03</td>
+      <td>398</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.39</td>
+      <td>23.1218</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>20622</th>
+      <td>100</td>
+      <td>192</td>
+      <td>-0.0009</td>
+      <td>0.0001</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.53</td>
+      <td>1601.23</td>
+      <td>1419.48</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8143.46</td>
+      <td>8.4892</td>
+      <td>0.03</td>
+      <td>397</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.56</td>
+      <td>23.0770</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>20623</th>
+      <td>100</td>
+      <td>193</td>
+      <td>-0.0001</td>
+      <td>0.0002</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.09</td>
+      <td>1599.81</td>
+      <td>1428.93</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8142.02</td>
+      <td>8.5424</td>
+      <td>0.03</td>
+      <td>397</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.47</td>
+      <td>23.0230</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>20624</th>
+      <td>100</td>
+      <td>194</td>
+      <td>-0.0011</td>
+      <td>0.0003</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.72</td>
+      <td>1597.29</td>
+      <td>1427.41</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8139.67</td>
+      <td>8.5215</td>
+      <td>0.03</td>
+      <td>394</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.38</td>
+      <td>23.1324</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>20625</th>
+      <td>100</td>
+      <td>195</td>
+      <td>-0.0002</td>
+      <td>-0.0001</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.41</td>
+      <td>1600.04</td>
+      <td>1431.90</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8142.90</td>
+      <td>8.5519</td>
+      <td>0.03</td>
+      <td>394</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.14</td>
+      <td>23.1923</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>20626</th>
+      <td>100</td>
+      <td>196</td>
+      <td>-0.0004</td>
+      <td>-0.0003</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.49</td>
+      <td>1597.98</td>
+      <td>1428.63</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8137.60</td>
+      <td>8.4956</td>
+      <td>0.03</td>
+      <td>397</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.49</td>
+      <td>22.9735</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>20627</th>
+      <td>100</td>
+      <td>197</td>
+      <td>-0.0016</td>
+      <td>-0.0005</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.54</td>
+      <td>1604.50</td>
+      <td>1433.58</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8136.50</td>
+      <td>8.5139</td>
+      <td>0.03</td>
+      <td>395</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.30</td>
+      <td>23.1594</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>20628</th>
+      <td>100</td>
+      <td>198</td>
+      <td>0.0004</td>
+      <td>0.0000</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.42</td>
+      <td>1602.46</td>
+      <td>1428.18</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8141.05</td>
+      <td>8.5646</td>
+      <td>0.03</td>
+      <td>398</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.44</td>
+      <td>22.9333</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>20629</th>
+      <td>100</td>
+      <td>199</td>
+      <td>-0.0011</td>
+      <td>0.0003</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.23</td>
+      <td>1605.26</td>
+      <td>1426.53</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8139.29</td>
+      <td>8.5389</td>
+      <td>0.03</td>
+      <td>395</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.29</td>
+      <td>23.0640</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>20630</th>
+      <td>100</td>
+      <td>200</td>
+      <td>-0.0032</td>
+      <td>-0.0005</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.85</td>
+      <td>1600.38</td>
+      <td>1432.14</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8137.33</td>
+      <td>8.5036</td>
+      <td>0.03</td>
+      <td>396</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.37</td>
+      <td>23.0522</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+<p>20631 rows × 28 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[83]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;D:/RUL/CMAPSSData/test_FD001.txt&#39;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">decimal</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">test</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[83]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
+      <th>6</th>
+      <th>7</th>
+      <th>8</th>
+      <th>9</th>
+      <th>...</th>
+      <th>18</th>
+      <th>19</th>
+      <th>20</th>
+      <th>21</th>
+      <th>22</th>
+      <th>23</th>
+      <th>24</th>
+      <th>25</th>
+      <th>26</th>
+      <th>27</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>1</td>
+      <td>0.0023</td>
+      <td>0.0003</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.02</td>
+      <td>1585.29</td>
+      <td>1398.21</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8125.55</td>
+      <td>8.4052</td>
+      <td>0.03</td>
+      <td>392</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.86</td>
+      <td>23.3735</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>2</td>
+      <td>-0.0027</td>
+      <td>-0.0003</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>641.71</td>
+      <td>1588.45</td>
+      <td>1395.42</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8139.62</td>
+      <td>8.3803</td>
+      <td>0.03</td>
+      <td>393</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>39.02</td>
+      <td>23.3916</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>3</td>
+      <td>0.0003</td>
+      <td>0.0001</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.46</td>
+      <td>1586.94</td>
+      <td>1401.34</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8130.10</td>
+      <td>8.4441</td>
+      <td>0.03</td>
+      <td>393</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>39.08</td>
+      <td>23.4166</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>4</td>
+      <td>0.0042</td>
+      <td>0.0000</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.44</td>
+      <td>1584.12</td>
+      <td>1406.42</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8132.90</td>
+      <td>8.3917</td>
+      <td>0.03</td>
+      <td>391</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>39.00</td>
+      <td>23.3737</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>5</td>
+      <td>0.0014</td>
+      <td>0.0000</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.51</td>
+      <td>1587.19</td>
+      <td>1401.92</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8129.54</td>
+      <td>8.4031</td>
+      <td>0.03</td>
+      <td>390</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.99</td>
+      <td>23.4130</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>1</td>
+      <td>6</td>
+      <td>0.0012</td>
+      <td>0.0003</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.11</td>
+      <td>1579.12</td>
+      <td>1395.13</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8127.46</td>
+      <td>8.4238</td>
+      <td>0.03</td>
+      <td>392</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.91</td>
+      <td>23.3467</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>1</td>
+      <td>7</td>
+      <td>-0.0000</td>
+      <td>0.0002</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.11</td>
+      <td>1583.34</td>
+      <td>1404.84</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8134.97</td>
+      <td>8.3914</td>
+      <td>0.03</td>
+      <td>391</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.85</td>
+      <td>23.3952</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>1</td>
+      <td>8</td>
+      <td>0.0006</td>
+      <td>-0.0000</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.54</td>
+      <td>1580.89</td>
+      <td>1400.89</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8125.93</td>
+      <td>8.4213</td>
+      <td>0.03</td>
+      <td>393</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>39.05</td>
+      <td>23.3224</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>1</td>
+      <td>9</td>
+      <td>-0.0036</td>
+      <td>0.0000</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>641.88</td>
+      <td>1593.29</td>
+      <td>1412.28</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8134.15</td>
+      <td>8.4353</td>
+      <td>0.03</td>
+      <td>391</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>39.10</td>
+      <td>23.4521</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>1</td>
+      <td>10</td>
+      <td>-0.0025</td>
+      <td>-0.0001</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.07</td>
+      <td>1585.25</td>
+      <td>1398.64</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8134.08</td>
+      <td>8.4093</td>
+      <td>0.03</td>
+      <td>391</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.87</td>
+      <td>23.3820</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>1</td>
+      <td>11</td>
+      <td>0.0007</td>
+      <td>-0.0004</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.04</td>
+      <td>1581.03</td>
+      <td>1403.83</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8132.38</td>
+      <td>8.3919</td>
+      <td>0.03</td>
+      <td>391</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>39.06</td>
+      <td>23.3609</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>1</td>
+      <td>12</td>
+      <td>0.0026</td>
+      <td>0.0003</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.54</td>
+      <td>1587.43</td>
+      <td>1397.82</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8132.33</td>
+      <td>8.3984</td>
+      <td>0.03</td>
+      <td>391</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>39.11</td>
+      <td>23.3845</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>1</td>
+      <td>13</td>
+      <td>-0.0056</td>
+      <td>0.0003</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>641.94</td>
+      <td>1589.09</td>
+      <td>1403.94</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8131.12</td>
+      <td>8.4166</td>
+      <td>0.03</td>
+      <td>392</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>39.08</td>
+      <td>23.3677</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>1</td>
+      <td>14</td>
+      <td>0.0017</td>
+      <td>-0.0004</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.23</td>
+      <td>1583.16</td>
+      <td>1402.88</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8130.30</td>
+      <td>8.4293</td>
+      <td>0.03</td>
+      <td>392</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>39.03</td>
+      <td>23.4572</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>1</td>
+      <td>15</td>
+      <td>-0.0003</td>
+      <td>-0.0003</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.50</td>
+      <td>1584.81</td>
+      <td>1398.79</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8133.62</td>
+      <td>8.4163</td>
+      <td>0.03</td>
+      <td>392</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>39.04</td>
+      <td>23.3672</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>1</td>
+      <td>16</td>
+      <td>-0.0018</td>
+      <td>0.0003</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.32</td>
+      <td>1584.51</td>
+      <td>1407.76</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8133.83</td>
+      <td>8.4300</td>
+      <td>0.03</td>
+      <td>390</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.87</td>
+      <td>23.3484</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>1</td>
+      <td>17</td>
+      <td>0.0014</td>
+      <td>0.0002</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.19</td>
+      <td>1582.70</td>
+      <td>1404.12</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8126.78</td>
+      <td>8.4577</td>
+      <td>0.03</td>
+      <td>391</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>39.09</td>
+      <td>23.3409</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>1</td>
+      <td>18</td>
+      <td>0.0035</td>
+      <td>0.0001</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.59</td>
+      <td>1586.53</td>
+      <td>1403.69</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8133.22</td>
+      <td>8.4323</td>
+      <td>0.03</td>
+      <td>391</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.96</td>
+      <td>23.4481</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>1</td>
+      <td>19</td>
+      <td>0.0029</td>
+      <td>0.0001</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.43</td>
+      <td>1585.58</td>
+      <td>1402.30</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8129.31</td>
+      <td>8.3892</td>
+      <td>0.03</td>
+      <td>391</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>39.06</td>
+      <td>23.3809</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>1</td>
+      <td>20</td>
+      <td>0.0011</td>
+      <td>-0.0001</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.61</td>
+      <td>1587.78</td>
+      <td>1400.70</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8128.59</td>
+      <td>8.4099</td>
+      <td>0.03</td>
+      <td>392</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>39.00</td>
+      <td>23.3325</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>1</td>
+      <td>21</td>
+      <td>0.0038</td>
+      <td>-0.0002</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.70</td>
+      <td>1583.30</td>
+      <td>1399.20</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8126.86</td>
+      <td>8.4174</td>
+      <td>0.03</td>
+      <td>392</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.96</td>
+      <td>23.4025</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>1</td>
+      <td>22</td>
+      <td>0.0012</td>
+      <td>0.0001</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.45</td>
+      <td>1582.78</td>
+      <td>1404.06</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8128.89</td>
+      <td>8.4557</td>
+      <td>0.03</td>
+      <td>392</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.94</td>
+      <td>23.3770</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>1</td>
+      <td>23</td>
+      <td>0.0009</td>
+      <td>-0.0000</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.12</td>
+      <td>1587.51</td>
+      <td>1395.09</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8130.97</td>
+      <td>8.4116</td>
+      <td>0.03</td>
+      <td>393</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>39.10</td>
+      <td>23.3186</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>1</td>
+      <td>24</td>
+      <td>-0.0006</td>
+      <td>-0.0001</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.32</td>
+      <td>1594.29</td>
+      <td>1400.15</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8130.70</td>
+      <td>8.4074</td>
+      <td>0.03</td>
+      <td>393</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.94</td>
+      <td>23.3971</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>1</td>
+      <td>25</td>
+      <td>0.0028</td>
+      <td>-0.0003</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.25</td>
+      <td>1582.43</td>
+      <td>1400.23</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8128.65</td>
+      <td>8.4007</td>
+      <td>0.03</td>
+      <td>393</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.96</td>
+      <td>23.3785</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>1</td>
+      <td>26</td>
+      <td>0.0047</td>
+      <td>-0.0005</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.48</td>
+      <td>1583.28</td>
+      <td>1408.07</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8129.12</td>
+      <td>8.3949</td>
+      <td>0.03</td>
+      <td>391</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.77</td>
+      <td>23.3557</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>1</td>
+      <td>27</td>
+      <td>-0.0007</td>
+      <td>0.0001</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.08</td>
+      <td>1586.65</td>
+      <td>1400.31</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8127.24</td>
+      <td>8.4494</td>
+      <td>0.03</td>
+      <td>392</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.87</td>
+      <td>23.3931</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>1</td>
+      <td>28</td>
+      <td>0.0022</td>
+      <td>0.0005</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>641.93</td>
+      <td>1594.25</td>
+      <td>1401.29</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8134.89</td>
+      <td>8.4470</td>
+      <td>0.03</td>
+      <td>392</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.83</td>
+      <td>23.3502</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>1</td>
+      <td>29</td>
+      <td>0.0014</td>
+      <td>0.0001</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>641.95</td>
+      <td>1587.15</td>
+      <td>1398.11</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8133.13</td>
+      <td>8.4212</td>
+      <td>0.03</td>
+      <td>392</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>39.02</td>
+      <td>23.3621</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>1</td>
+      <td>30</td>
+      <td>-0.0025</td>
+      <td>0.0004</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.79</td>
+      <td>1585.72</td>
+      <td>1400.97</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8134.79</td>
+      <td>8.4110</td>
+      <td>0.03</td>
+      <td>391</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>39.09</td>
+      <td>23.4069</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>13066</th>
+      <td>100</td>
+      <td>169</td>
+      <td>0.0026</td>
+      <td>-0.0000</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.36</td>
+      <td>1591.25</td>
+      <td>1408.48</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8176.17</td>
+      <td>8.4480</td>
+      <td>0.03</td>
+      <td>392</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.83</td>
+      <td>23.3286</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13067</th>
+      <td>100</td>
+      <td>170</td>
+      <td>-0.0006</td>
+      <td>-0.0004</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.70</td>
+      <td>1589.92</td>
+      <td>1407.93</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8178.23</td>
+      <td>8.4235</td>
+      <td>0.03</td>
+      <td>393</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.88</td>
+      <td>23.2980</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13068</th>
+      <td>100</td>
+      <td>171</td>
+      <td>-0.0026</td>
+      <td>-0.0003</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.83</td>
+      <td>1586.64</td>
+      <td>1411.19</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8172.32</td>
+      <td>8.4667</td>
+      <td>0.03</td>
+      <td>392</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.84</td>
+      <td>23.2103</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13069</th>
+      <td>100</td>
+      <td>172</td>
+      <td>0.0007</td>
+      <td>0.0003</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.61</td>
+      <td>1594.51</td>
+      <td>1403.93</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8179.29</td>
+      <td>8.4279</td>
+      <td>0.03</td>
+      <td>394</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.95</td>
+      <td>23.3630</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13070</th>
+      <td>100</td>
+      <td>173</td>
+      <td>-0.0003</td>
+      <td>-0.0000</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.56</td>
+      <td>1591.49</td>
+      <td>1405.75</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8182.17</td>
+      <td>8.4615</td>
+      <td>0.03</td>
+      <td>393</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.92</td>
+      <td>23.3491</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13071</th>
+      <td>100</td>
+      <td>174</td>
+      <td>-0.0005</td>
+      <td>0.0003</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.81</td>
+      <td>1589.97</td>
+      <td>1404.90</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8183.70</td>
+      <td>8.4234</td>
+      <td>0.03</td>
+      <td>392</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.64</td>
+      <td>23.2858</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13072</th>
+      <td>100</td>
+      <td>175</td>
+      <td>0.0019</td>
+      <td>0.0000</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.25</td>
+      <td>1595.08</td>
+      <td>1398.46</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8182.50</td>
+      <td>8.4691</td>
+      <td>0.03</td>
+      <td>393</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>39.00</td>
+      <td>23.2858</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13073</th>
+      <td>100</td>
+      <td>176</td>
+      <td>0.0002</td>
+      <td>0.0002</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.73</td>
+      <td>1590.96</td>
+      <td>1410.76</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8186.68</td>
+      <td>8.4922</td>
+      <td>0.03</td>
+      <td>395</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.79</td>
+      <td>23.2757</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13074</th>
+      <td>100</td>
+      <td>177</td>
+      <td>-0.0041</td>
+      <td>-0.0003</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.80</td>
+      <td>1593.26</td>
+      <td>1411.29</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8188.45</td>
+      <td>8.4296</td>
+      <td>0.03</td>
+      <td>393</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>39.02</td>
+      <td>23.2923</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13075</th>
+      <td>100</td>
+      <td>178</td>
+      <td>0.0001</td>
+      <td>0.0005</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.32</td>
+      <td>1591.78</td>
+      <td>1408.08</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8184.89</td>
+      <td>8.4574</td>
+      <td>0.03</td>
+      <td>394</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.65</td>
+      <td>23.1937</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13076</th>
+      <td>100</td>
+      <td>179</td>
+      <td>0.0041</td>
+      <td>0.0001</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.30</td>
+      <td>1588.93</td>
+      <td>1412.82</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8185.87</td>
+      <td>8.4371</td>
+      <td>0.03</td>
+      <td>393</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.78</td>
+      <td>23.2962</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13077</th>
+      <td>100</td>
+      <td>180</td>
+      <td>-0.0004</td>
+      <td>0.0001</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.65</td>
+      <td>1593.47</td>
+      <td>1415.79</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8193.02</td>
+      <td>8.5022</td>
+      <td>0.03</td>
+      <td>392</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.75</td>
+      <td>23.3786</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13078</th>
+      <td>100</td>
+      <td>181</td>
+      <td>-0.0010</td>
+      <td>0.0000</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.94</td>
+      <td>1586.09</td>
+      <td>1408.95</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8193.03</td>
+      <td>8.4124</td>
+      <td>0.03</td>
+      <td>393</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.88</td>
+      <td>23.1571</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13079</th>
+      <td>100</td>
+      <td>182</td>
+      <td>-0.0027</td>
+      <td>-0.0001</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.28</td>
+      <td>1598.05</td>
+      <td>1414.43</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8193.05</td>
+      <td>8.4333</td>
+      <td>0.03</td>
+      <td>394</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.90</td>
+      <td>23.2921</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13080</th>
+      <td>100</td>
+      <td>183</td>
+      <td>0.0009</td>
+      <td>0.0001</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.78</td>
+      <td>1595.34</td>
+      <td>1406.21</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8197.42</td>
+      <td>8.4463</td>
+      <td>0.03</td>
+      <td>394</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.66</td>
+      <td>23.3496</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13081</th>
+      <td>100</td>
+      <td>184</td>
+      <td>0.0001</td>
+      <td>-0.0004</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.60</td>
+      <td>1595.89</td>
+      <td>1416.17</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8197.66</td>
+      <td>8.4568</td>
+      <td>0.03</td>
+      <td>394</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.80</td>
+      <td>23.1229</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13082</th>
+      <td>100</td>
+      <td>185</td>
+      <td>0.0032</td>
+      <td>0.0004</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.84</td>
+      <td>1592.18</td>
+      <td>1413.60</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8195.29</td>
+      <td>8.4424</td>
+      <td>0.03</td>
+      <td>394</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.81</td>
+      <td>23.3007</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13083</th>
+      <td>100</td>
+      <td>186</td>
+      <td>-0.0025</td>
+      <td>0.0005</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.38</td>
+      <td>1592.04</td>
+      <td>1416.25</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8203.03</td>
+      <td>8.4802</td>
+      <td>0.03</td>
+      <td>393</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.89</td>
+      <td>23.3233</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13084</th>
+      <td>100</td>
+      <td>187</td>
+      <td>0.0019</td>
+      <td>0.0002</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.40</td>
+      <td>1595.19</td>
+      <td>1416.95</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8197.56</td>
+      <td>8.4632</td>
+      <td>0.03</td>
+      <td>394</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.87</td>
+      <td>23.3093</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13085</th>
+      <td>100</td>
+      <td>188</td>
+      <td>0.0010</td>
+      <td>0.0005</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.35</td>
+      <td>1589.88</td>
+      <td>1409.88</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8206.25</td>
+      <td>8.4457</td>
+      <td>0.03</td>
+      <td>394</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.54</td>
+      <td>23.3504</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13086</th>
+      <td>100</td>
+      <td>189</td>
+      <td>-0.0003</td>
+      <td>0.0002</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.29</td>
+      <td>1592.33</td>
+      <td>1417.66</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8209.84</td>
+      <td>8.4423</td>
+      <td>0.03</td>
+      <td>393</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.71</td>
+      <td>23.3188</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13087</th>
+      <td>100</td>
+      <td>190</td>
+      <td>-0.0038</td>
+      <td>0.0002</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.95</td>
+      <td>1598.97</td>
+      <td>1421.28</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8207.95</td>
+      <td>8.4765</td>
+      <td>0.03</td>
+      <td>395</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.74</td>
+      <td>23.3551</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13088</th>
+      <td>100</td>
+      <td>191</td>
+      <td>-0.0031</td>
+      <td>-0.0001</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.92</td>
+      <td>1589.54</td>
+      <td>1413.65</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8201.94</td>
+      <td>8.4877</td>
+      <td>0.03</td>
+      <td>396</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.89</td>
+      <td>23.2279</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13089</th>
+      <td>100</td>
+      <td>192</td>
+      <td>-0.0034</td>
+      <td>0.0001</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.05</td>
+      <td>1598.18</td>
+      <td>1418.58</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8210.24</td>
+      <td>8.4171</td>
+      <td>0.03</td>
+      <td>395</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.77</td>
+      <td>23.2148</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13090</th>
+      <td>100</td>
+      <td>193</td>
+      <td>0.0018</td>
+      <td>0.0004</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.10</td>
+      <td>1595.60</td>
+      <td>1414.62</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8213.57</td>
+      <td>8.4429</td>
+      <td>0.03</td>
+      <td>395</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.63</td>
+      <td>23.2952</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13091</th>
+      <td>100</td>
+      <td>194</td>
+      <td>0.0049</td>
+      <td>0.0000</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.24</td>
+      <td>1599.45</td>
+      <td>1415.79</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8213.28</td>
+      <td>8.4715</td>
+      <td>0.03</td>
+      <td>394</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.65</td>
+      <td>23.1974</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13092</th>
+      <td>100</td>
+      <td>195</td>
+      <td>-0.0011</td>
+      <td>-0.0001</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.22</td>
+      <td>1595.69</td>
+      <td>1422.05</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8210.85</td>
+      <td>8.4512</td>
+      <td>0.03</td>
+      <td>395</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.57</td>
+      <td>23.2771</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13093</th>
+      <td>100</td>
+      <td>196</td>
+      <td>-0.0006</td>
+      <td>-0.0003</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.44</td>
+      <td>1593.15</td>
+      <td>1406.82</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8217.24</td>
+      <td>8.4569</td>
+      <td>0.03</td>
+      <td>395</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.62</td>
+      <td>23.2051</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13094</th>
+      <td>100</td>
+      <td>197</td>
+      <td>-0.0038</td>
+      <td>0.0001</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.26</td>
+      <td>1594.99</td>
+      <td>1419.36</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8220.48</td>
+      <td>8.4711</td>
+      <td>0.03</td>
+      <td>395</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.66</td>
+      <td>23.2699</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13095</th>
+      <td>100</td>
+      <td>198</td>
+      <td>0.0013</td>
+      <td>0.0003</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.95</td>
+      <td>1601.62</td>
+      <td>1424.99</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>8214.64</td>
+      <td>8.4903</td>
+      <td>0.03</td>
+      <td>396</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.70</td>
+      <td>23.1855</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+<p>13096 rows × 28 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[84]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">RUL</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;D:/RUL/CMAPSSData/RUL_FD001.txt&#39;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">decimal</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">RUL</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[84]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>112</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>98</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>69</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>82</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>91</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>93</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>91</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>95</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>111</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>96</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>97</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>124</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>95</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>107</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>83</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>84</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>50</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>28</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>87</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>16</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>57</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>111</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>113</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>20</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>145</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>119</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>66</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>97</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>90</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>115</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>70</th>
+      <td>118</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>71</th>
+      <td>50</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>72</th>
+      <td>131</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>73</th>
+      <td>126</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>74</th>
+      <td>113</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>75</th>
+      <td>10</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>76</th>
+      <td>34</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>77</th>
+      <td>107</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>78</th>
+      <td>63</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>79</th>
+      <td>90</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>80</th>
+      <td>8</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>81</th>
+      <td>9</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>82</th>
+      <td>137</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>83</th>
+      <td>58</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>84</th>
+      <td>118</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>85</th>
+      <td>89</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>86</th>
+      <td>116</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>87</th>
+      <td>115</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>88</th>
+      <td>136</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>89</th>
+      <td>28</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>90</th>
+      <td>38</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>91</th>
+      <td>20</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>92</th>
+      <td>85</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>93</th>
+      <td>55</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>94</th>
+      <td>128</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>95</th>
+      <td>137</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>96</th>
+      <td>82</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>97</th>
+      <td>59</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>98</th>
+      <td>117</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>99</th>
+      <td>20</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+<p>100 rows × 2 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>通过观察上面的数据发现，train和test数据集的26/27列数据是NaN,可能是数据集中的制表符引起的。用下面的代码train和test数据集中每一列缺失的值的比例：</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[85]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">table_NaN</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">train</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="n">test</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">table_NaN</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">]</span>
+<span class="n">table_NaN</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[85]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>train</th>
+      <th>test</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>20631</td>
+      <td>13096</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>20631</td>
+      <td>13096</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>由此可见，只有26和27列有空值，我们得将空值清洗掉。然后给每一列取一个列名：</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[86]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#清理无用列</span>
+<span class="n">train</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">train</span><span class="o">.</span><span class="n">columns</span><span class="p">[[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">test</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">test</span><span class="o">.</span><span class="n">columns</span><span class="p">[[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">RUL</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">RUL</span><span class="o">.</span><span class="n">columns</span><span class="p">[[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1">#命名表头</span>
+<span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;unit&#39;</span><span class="p">,</span> <span class="s1">&#39;cycles&#39;</span><span class="p">,</span> <span class="s1">&#39;op_setting1&#39;</span><span class="p">,</span> <span class="s1">&#39;op_setting2&#39;</span><span class="p">,</span> <span class="s1">&#39;op_setting3&#39;</span><span class="p">,</span> <span class="s1">&#39;s1&#39;</span><span class="p">,</span> <span class="s1">&#39;s2&#39;</span><span class="p">,</span> <span class="s1">&#39;s3&#39;</span><span class="p">,</span> <span class="s1">&#39;s4&#39;</span><span class="p">,</span> <span class="s1">&#39;s5&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;s6&#39;</span><span class="p">,</span> <span class="s1">&#39;s7&#39;</span><span class="p">,</span> <span class="s1">&#39;s8&#39;</span><span class="p">,</span> <span class="s1">&#39;s9&#39;</span><span class="p">,</span> <span class="s1">&#39;s10&#39;</span><span class="p">,</span> <span class="s1">&#39;s11&#39;</span><span class="p">,</span> <span class="s1">&#39;s12&#39;</span><span class="p">,</span> <span class="s1">&#39;s13&#39;</span><span class="p">,</span> <span class="s1">&#39;s14&#39;</span><span class="p">,</span> <span class="s1">&#39;s15&#39;</span><span class="p">,</span> <span class="s1">&#39;s16&#39;</span><span class="p">,</span> <span class="s1">&#39;s17&#39;</span><span class="p">,</span> <span class="s1">&#39;s18&#39;</span><span class="p">,</span> <span class="s1">&#39;s19&#39;</span><span class="p">,</span> <span class="s1">&#39;s20&#39;</span><span class="p">,</span> <span class="s1">&#39;s21&#39;</span><span class="p">]</span>
+<span class="n">train</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">cols</span>
+<span class="n">test</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">cols</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>先看看经过空值清理后train数据集的样子：</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[87]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">train</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[87]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>unit</th>
+      <th>cycles</th>
+      <th>op_setting1</th>
+      <th>op_setting2</th>
+      <th>op_setting3</th>
+      <th>s1</th>
+      <th>s2</th>
+      <th>s3</th>
+      <th>s4</th>
+      <th>s5</th>
+      <th>...</th>
+      <th>s12</th>
+      <th>s13</th>
+      <th>s14</th>
+      <th>s15</th>
+      <th>s16</th>
+      <th>s17</th>
+      <th>s18</th>
+      <th>s19</th>
+      <th>s20</th>
+      <th>s21</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>1</td>
+      <td>-0.0007</td>
+      <td>-0.0004</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>641.82</td>
+      <td>1589.70</td>
+      <td>1400.60</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>521.66</td>
+      <td>2388.02</td>
+      <td>8138.62</td>
+      <td>8.4195</td>
+      <td>0.03</td>
+      <td>392</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>39.06</td>
+      <td>23.4190</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>2</td>
+      <td>0.0019</td>
+      <td>-0.0003</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.15</td>
+      <td>1591.82</td>
+      <td>1403.14</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>522.28</td>
+      <td>2388.07</td>
+      <td>8131.49</td>
+      <td>8.4318</td>
+      <td>0.03</td>
+      <td>392</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>39.00</td>
+      <td>23.4236</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>3</td>
+      <td>-0.0043</td>
+      <td>0.0003</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.35</td>
+      <td>1587.99</td>
+      <td>1404.20</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>522.42</td>
+      <td>2388.03</td>
+      <td>8133.23</td>
+      <td>8.4178</td>
+      <td>0.03</td>
+      <td>390</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.95</td>
+      <td>23.3442</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>4</td>
+      <td>0.0007</td>
+      <td>0.0000</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.35</td>
+      <td>1582.79</td>
+      <td>1401.87</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>522.86</td>
+      <td>2388.08</td>
+      <td>8133.83</td>
+      <td>8.3682</td>
+      <td>0.03</td>
+      <td>392</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.88</td>
+      <td>23.3739</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>5</td>
+      <td>-0.0019</td>
+      <td>-0.0002</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.37</td>
+      <td>1582.85</td>
+      <td>1406.22</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>522.19</td>
+      <td>2388.04</td>
+      <td>8133.80</td>
+      <td>8.4294</td>
+      <td>0.03</td>
+      <td>393</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.90</td>
+      <td>23.4044</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 26 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>再看看清理后test数据集的样子：</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[88]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[88]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>unit</th>
+      <th>cycles</th>
+      <th>op_setting1</th>
+      <th>op_setting2</th>
+      <th>op_setting3</th>
+      <th>s1</th>
+      <th>s2</th>
+      <th>s3</th>
+      <th>s4</th>
+      <th>s5</th>
+      <th>...</th>
+      <th>s12</th>
+      <th>s13</th>
+      <th>s14</th>
+      <th>s15</th>
+      <th>s16</th>
+      <th>s17</th>
+      <th>s18</th>
+      <th>s19</th>
+      <th>s20</th>
+      <th>s21</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>1</td>
+      <td>0.0023</td>
+      <td>0.0003</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>643.02</td>
+      <td>1585.29</td>
+      <td>1398.21</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>521.72</td>
+      <td>2388.03</td>
+      <td>8125.55</td>
+      <td>8.4052</td>
+      <td>0.03</td>
+      <td>392</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.86</td>
+      <td>23.3735</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>2</td>
+      <td>-0.0027</td>
+      <td>-0.0003</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>641.71</td>
+      <td>1588.45</td>
+      <td>1395.42</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>522.16</td>
+      <td>2388.06</td>
+      <td>8139.62</td>
+      <td>8.3803</td>
+      <td>0.03</td>
+      <td>393</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>39.02</td>
+      <td>23.3916</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>3</td>
+      <td>0.0003</td>
+      <td>0.0001</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.46</td>
+      <td>1586.94</td>
+      <td>1401.34</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>521.97</td>
+      <td>2388.03</td>
+      <td>8130.10</td>
+      <td>8.4441</td>
+      <td>0.03</td>
+      <td>393</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>39.08</td>
+      <td>23.4166</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>4</td>
+      <td>0.0042</td>
+      <td>0.0000</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.44</td>
+      <td>1584.12</td>
+      <td>1406.42</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>521.38</td>
+      <td>2388.05</td>
+      <td>8132.90</td>
+      <td>8.3917</td>
+      <td>0.03</td>
+      <td>391</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>39.00</td>
+      <td>23.3737</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>5</td>
+      <td>0.0014</td>
+      <td>0.0000</td>
+      <td>100.0</td>
+      <td>518.67</td>
+      <td>642.51</td>
+      <td>1587.19</td>
+      <td>1401.92</td>
+      <td>14.62</td>
+      <td>...</td>
+      <td>522.15</td>
+      <td>2388.03</td>
+      <td>8129.54</td>
+      <td>8.4031</td>
+      <td>0.03</td>
+      <td>390</td>
+      <td>2388</td>
+      <td>100.0</td>
+      <td>38.99</td>
+      <td>23.4130</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 26 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>以及RUL数据集。简单来讲就是第一个元件剩余使用寿命为112，第二个为98，依此类推。</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[89]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">RUL</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[89]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>112</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>98</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>69</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>82</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>91</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+ 
+
+
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['$','$'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+
+            </div><!-- /.entry-content -->
+
+            <span style="color: transparent" id="/rul-shu-ju-zhun-bei-di-yi-ci-qing-xi-qu-chu-kong-zhi.html" class="leancloud-visitors" data-flag-title="Your Article Title">
+                <em class="post-meta-item-text">阅读量 </em>
+                <i class="leancloud-visitors-count"></i>
+            </span>
+            <div id="vcomments"></div>
+                <script>
+                    new Valine({
+                        el: '#vcomments',
+                        appId: 'hCWLeEN3rTcXEwcselxn5TH6-gzGzoHsz',
+                        appKey: 'rThwAyobCpAV4gKqE07yuWxy',
+                        notify:false, 
+                        verify:false, 
+                        avatar:'mp', 
+                        placeholder: '来啊 造作啊',
+                        visitor: true // 阅读量统计
+                    })
+                </script>
+        </div><!-- /.eleven.columns -->
+
+<div class="three columns">
+<!-- 
+
+<h4>文章</h4>
+ <ul class="blank">
+        <li class="active"><a href="/category/ji-qi-xue-xi.html">机器学习</a></li>
+        <li><a href="/category/pythonan-quan.html">python安全</a></li>
+        <li><a href="/category/pythonji-chu.html">python基础</a></li>
+        <li><a href="/category/xiang-mu-guan-li.html">项目管理</a></li>
+        <li><a href="/category/xiao-ji-qiao.html">小技巧</a></li>
+  </ul> -->
+
+<h4>分类</h4>
+<ul class="blank">
+		<li><a href="/category/ji-qi-xue-xi.html">机器学习</a></li>
+		<li><a href="/category/pythonan-quan.html">python安全</a></li>
+		<li><a href="/category/pythonji-chu.html">python基础</a></li>
+		<li><a href="/category/xiang-mu-guan-li.html">项目管理</a></li>
+		<li><a href="/category/xiao-ji-qiao.html">小技巧</a></li>
+</ul>
+
+
+<h4>标签</h4>
+	<ul class="blank">
+	    <li class="tag-3"><a href="/tag/nginx.html">nginx</a></li>
+	    <li class="tag-2"><a href="/tag/pythonan-quan.html">python安全</a></li>
+	    <li class="tag-2"><a href="/tag/xiang-mu-guan-li.html">项目管理</a></li>
+	    <li class="tag-2"><a href="/tag/python.html">python</a></li>
+	    <li class="tag-2"><a href="/tag/cmapssdata.html">CMAPSSData</a></li>
+	    <li class="tag-2"><a href="/tag/shu-xue.html">数学</a></li>
+	    <li class="tag-4"><a href="/tag/matplotlib.html">matplotlib</a></li>
+	    <li class="tag-1"><a href="/tag/ji-qi-xue-xi.html">机器学习</a></li>
+	    <li class="tag-1"><a href="/tag/tensorflow.html">tensorflow</a></li>
+	    <li class="tag-3"><a href="/tag/rul.html">RUL</a></li>
+</ul>
+
+
+<nav class="widget">
+  <h4>Social</h4>
+  <ul class="blank">
+    <li><a href="https://www.cnblogs.com/zhouXX/">博客园</a></li>
+    <li><a href="http://github.com/wanzhouyi">github</a></li>
+  </ul>
+</nav>
+
+</div>    </div><!-- /.row -->
+</section>
+
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    <!-- Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a> -->
+                  <a href="/pages/guan-yu-ben-bo-ke.html">关于</a><br/><a href="https://wushang1987.github.io/">wushang1987的博客</a>
+                  </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+                <li><div class="btn primary"><a href="https://github.com/wanzhouyi" target="_blank">Github</a></div></li>
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+  <script src="/theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="/theme/js/libs/gumby.min.js"></script>
+  <script src="/theme/js/plugins.js"></script>
+  <script>
+    (function(){
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https'){
+       bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else{
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+    </script>
+    
+</body>
+</html>
