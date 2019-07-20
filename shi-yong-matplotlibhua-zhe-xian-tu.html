@@ -2,7 +2,7 @@
 <html lang="chinese (simplified)">
 <head>
 
-        <title>漫谈项目管理之一：一个人一个项目</title>
+        <title>使用matplotlib画折线图</title>
         <meta charset="utf-8" />
 
 
@@ -51,8 +51,8 @@
 
                   <li><a href="/category/ji-qi-xue-xi.html">机器学习</a></li>
                   <li><a href="/category/pythonan-quan.html">python安全</a></li>
-                  <li><a href="/category/pythonji-chu.html">python基础</a></li>
-                  <li class="active"><a href="/category/xiang-mu-guan-li.html">项目管理</a></li>
+                  <li class="active"><a href="/category/pythonji-chu.html">python基础</a></li>
+                  <li><a href="/category/xiang-mu-guan-li.html">项目管理</a></li>
                   <li><a href="/category/xiao-ji-qiao.html">小技巧</a></li>
 
               </ul>
@@ -66,12 +66,12 @@
 
             <header>
                 <h4 class="entry-title">
-                    <a href="/man-tan-xiang-mu-guan-li-zhi-yi-yi-ge-ren-yi-ge-xiang-mu.html" rel="bookmark" title="Permalink to 漫谈项目管理之一：一个人一个项目">漫谈项目管理之一：一个人一个项目</a></h4>
+                    <a href="/shi-yong-matplotlibhua-zhe-xian-tu.html" rel="bookmark" title="Permalink to 使用matplotlib画折线图">使用matplotlib画折线图</a></h4>
                 
             </header>
             <footer class="post-info">
-                <abbr class="published" title="2019-06-19T00:00:00+02:00">
-                    2019-06-19&nbsp;&nbsp;
+                <abbr class="published" title="2019-07-20T00:00:00+02:00">
+                    2019-07-20&nbsp;&nbsp;
                     <!-- <address class="vcard author"> -->
                         By&nbsp;&nbsp;
                         <a class="url fn" href="/author/wanzhouyi.html"> wanzhouyi</a>
@@ -1229,36 +1229,93 @@ h6:hover .anchor-link {
 
 .ansi-bold { font-weight: bold; }
 </style>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">x_data</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="c1">#假定的X轴数据</span>
+<span class="n">y1_data</span><span class="o">=</span><span class="p">[</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">x_data</span><span class="p">]</span><span class="c1">#假定Y轴数据是X轴数据的平方</span>
+<span class="n">y2_data</span><span class="o">=</span><span class="p">[</span><span class="n">x</span><span class="o">**</span><span class="mi">3</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">x_data</span><span class="p">]</span><span class="c1">#假定Y轴数据是X轴数据的立方</span>
+<span class="n">l1</span><span class="p">,</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_data</span><span class="p">,</span><span class="n">y1_data</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;squre&#39;</span><span class="p">)</span><span class="c1">#将平方数据展示在图上</span>
+<span class="n">l2</span><span class="p">,</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_data</span><span class="p">,</span><span class="n">y2_data</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;cubic&#39;</span><span class="p">)</span><span class="c1">#将立方数据展示在图上</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x_label&#39;</span><span class="p">)</span><span class="c1">#设置x轴的标签为x_label</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;y_label&#39;</span><span class="p">)</span><span class="c1">#设置x轴的标签为x_label</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;lineplot example&#39;</span><span class="p">)</span><span class="c1">#设置图表标题</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span><span class="c1">#设置图例的前题是l1,l2指定了label</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+"
+>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h5 id="&#37027;&#26102;&#20505;&#30340;&#23567;Z">&#37027;&#26102;&#20505;&#30340;&#23567;Z<a class="anchor-link" href="#&#37027;&#26102;&#20505;&#30340;&#23567;Z">&#182;</a></h5><p>小Z新入职了一家小型软件公司，成功通过了三个月试用期，被外派到甲方的项目（后面简称M项目）里。由于项目已经持续开发了一年多，业务已经比较复杂了，于是开始艰苦的业务学习与理解，同时小Z也了解到M项目采用Java开发，基于SprintBoot，采用微服务架构，使用k8s做容器管理。在这个底座上，划分APP，每个APP由多个微服务组成，各个微服务共用一些基础的微服务，比如身份认证、网关等。M项目实际是一个内部项目，项目的业务方和用户都是内部员工。那个时候微服务刚刚流行起来，小Z对这一切都感到比较新奇，准备撸起袖子大干一场。</p>
-<h5 id="&#20043;&#21069;&#30340;&#23567;Z">&#20043;&#21069;&#30340;&#23567;Z<a class="anchor-link" href="#&#20043;&#21069;&#30340;&#23567;Z">&#182;</a></h5><p>在这之前小Z做了8年开发，期间接触过很多不同的项目，有Android/IOS的，有混合开发的，有WPF/WCF的，有go语言相关的，也有前端项目，还有微信/支付宝相关的，总之做了很多项目，但是小Z一直对C#情有独钟。认为在宇宙无敌IDE Visual Studio的加持下，C#绝对是对程序员最最友好的语言了。小Z入职新公司之前也用.net core做了一个微服务项目，使用的是全套的docker官方套件，docker swarm什么的。</p>
-<h5 id="&#23567;Z&#30340;&#36716;&#25240;">&#23567;Z&#30340;&#36716;&#25240;<a class="anchor-link" href="#&#23567;Z&#30340;&#36716;&#25240;">&#182;</a></h5><p>有一天周四的下午，小Z正准备下班打卡，被M项目的甲方领导（后面叫大W）叫住了，说晚上先留下来说个事情。小Z开始忐忑了，于是晚饭也顾不得吃了，把最近学习的spring cloud神马的都在心中默默地温习了一遍。<br>
-七点半，开聊。<br>
-大W：我们准备启动一个新项目，有没有兴趣？<br>
-小Z：好呀，什么项目？<br>
-大W：一个B/C/S项目，依托于现有的平台，开发一套桌面软件，用于XX业务。<br>
-小Z有点小失落，桌面软件和java几乎扯不上关系了，但想着能继续用WPF，那是天然的强项，心情立马又平静了。<br>
-大W：这个项目呢，我准备用python开发。我知道你没搞过python，现在团队里也没人搞过。不过你简历里写过学习能力超强的。明天我们把业务梳理一下，周末两天先熟悉一下语法。下周一启动开发，因为要给大领导演示，开发周期只有两周，下下周五出版本。（大W喝了一口茶）演示成功了，这项业务就抢到手了，对我们团队而言你就是功臣，以后我是不会亏待你的。<br>
-小Z当时就震惊了，对于从天而降的这口锅不知道背不背得动，但无论如何，这个锅得接着了，听说python也挺好玩的，那就试试吧。</p>
-<h5 id="&#36827;&#20987;&#30340;&#23567;Z">&#36827;&#20987;&#30340;&#23567;Z<a class="anchor-link" href="#&#36827;&#20987;&#30340;&#23567;Z">&#182;</a></h5><p>那时候真是一穷二白啊，小Z不会python有木有，需求分析也只是简单画了个流程图有木有，大W承诺协调和招聘的人才迟迟不见踪影有木有，时间只有两周有木有……是当真要给领导演示，演示完是当真要拿给用户使用的……<br>
-但是，残酷的现实并没有击倒小Z，反倒激起了斗志，开始了16 * 7 的节奏。<br>
-一切从需求出发，小Z首先把业务进行再次梳理，输出了story，并和大W确认。<br>
-有了初步的story之后，小Z明确了自己需要重点学习的语言特性，开始死磕python。<br>
-对照story和有限的开发能力，小Z给自己定了一个简单的计划。<br>
-第一周搭建了初步的框架，初步调通了流程。<br>
-第二周完善业务逻辑，为演示做准备。<br>
-在小Z的坚持下，项目进展还比较顺利，M项目演示成功并顺利占坑。大M狠狠地表扬了小Z一把。</p>
-<h5 id="&#23567;Z&#30340;&#24635;&#32467;">&#23567;Z&#30340;&#24635;&#32467;<a class="anchor-link" href="#&#23567;Z&#30340;&#24635;&#32467;">&#182;</a></h5><p>1、想做的事情，不一定总是会按预期的路线来，想好的搞微服务架构呢。生活和工作总是充满惊喜，用一颗平静的心对待。<br>
-2、砸下来的锅，得见招拆招，总会有办法把锅砸成铁片。识别出项目中的风险，技术风险、时间风险等等，识别出来的风险就想办法规避、减轻，有条件的话可转移。小Z这个项目中只能硬刚开发能力缺陷。<br>
-3、越是紧张，越是不能慌乱。<br>
-这一条看着简单，做起来却是最难的，玄奘法师西行之时，在莫贺延碛迷路之后的非常急躁,慌乱之下打翻了皮囊。西行刚刚开始,救命之水就荡然无存，差点命丧于此，要真是这样，可能也没有后来的西游记了。<br>
-小Z给自己定了一个计划，其实是一个时间管理。项目开发虽不总是四平八稳，有了计划，就有了目标，事情有了主线，不至于因为盲目而迷惘慌乱。<br>
-小Z自发地输出了story和甲方确认，就是范围管理和沟通管理的实例。</p>
-<h4 id="&#19968;&#20010;&#20154;&#30340;&#39033;&#30446;&#65292;&#33258;&#24049;&#31649;&#29702;&#33258;&#24049;&#65292;&#20063;&#26377;&#22871;&#36335;&#12290;">&#19968;&#20010;&#20154;&#30340;&#39033;&#30446;&#65292;&#33258;&#24049;&#31649;&#29702;&#33258;&#24049;&#65292;&#20063;&#26377;&#22871;&#36335;&#12290;<a class="anchor-link" href="#&#19968;&#20010;&#20154;&#30340;&#39033;&#30446;&#65292;&#33258;&#24049;&#31649;&#29702;&#33258;&#24049;&#65292;&#20063;&#26377;&#22871;&#36335;&#12290;">&#182;</a></h4>
+<h4 id="&#38500;&#20102;&#25240;&#32447;&#22270;&#20027;&#35201;&#30340;&#21151;&#33021;&#65292;&#36824;&#21487;&#20197;&#35774;&#32622;&#32447;&#26465;&#30340;&#26679;&#24335;&#12289;&#39068;&#33394;&#12289;&#31895;&#32447;&#12289;&#24418;&#29366;&#31561;&#12290;">&#38500;&#20102;&#25240;&#32447;&#22270;&#20027;&#35201;&#30340;&#21151;&#33021;&#65292;&#36824;&#21487;&#20197;&#35774;&#32622;&#32447;&#26465;&#30340;&#26679;&#24335;&#12289;&#39068;&#33394;&#12289;&#31895;&#32447;&#12289;&#24418;&#29366;&#31561;&#12290;<a class="anchor-link" href="#&#38500;&#20102;&#25240;&#32447;&#22270;&#20027;&#35201;&#30340;&#21151;&#33021;&#65292;&#36824;&#21487;&#20197;&#35774;&#32622;&#32447;&#26465;&#30340;&#26679;&#24335;&#12289;&#39068;&#33394;&#12289;&#31895;&#32447;&#12289;&#24418;&#29366;&#31561;&#12290;">&#182;</a></h4><h5 id="legend">legend<a class="anchor-link" href="#legend">&#182;</a></h5><p>legend方法可接受一个loc关键字参数来设定图例的位置，可取值为数字或字符串：</p>
+
+<pre><code> 0: ‘best'
+
+ 1: ‘upper right'
+
+ 2: ‘upper left'
+
+ 3: ‘lower left'
+
+ 4: ‘lower right'
+
+ 5: ‘right'
+
+ 6: ‘center left'
+
+ 7: ‘center right'
+
+ 8: ‘lower center'
+
+ 9: ‘upper center'
+
+ 10: ‘center'</code></pre>
+
 </div>
 </div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+    </div>
+</div>
+</div>
+
 </div>
  
 
@@ -1294,7 +1351,7 @@ h6:hover .anchor-link {
 
             </div><!-- /.entry-content -->
 
-            <span style="color: transparent" id="/man-tan-xiang-mu-guan-li-zhi-yi-yi-ge-ren-yi-ge-xiang-mu.html" class="leancloud-visitors" data-flag-title="Your Article Title">
+            <span style="color: transparent" id="/shi-yong-matplotlibhua-zhe-xian-tu.html" class="leancloud-visitors" data-flag-title="Your Article Title">
                 <em class="post-meta-item-text">阅读量 </em>
                 <i class="leancloud-visitors-count"></i>
             </span>
@@ -1320,8 +1377,8 @@ h6:hover .anchor-link {
  <ul class="blank">
         <li><a href="/category/ji-qi-xue-xi.html">机器学习</a></li>
         <li><a href="/category/pythonan-quan.html">python安全</a></li>
-        <li><a href="/category/pythonji-chu.html">python基础</a></li>
-        <li class="active"><a href="/category/xiang-mu-guan-li.html">项目管理</a></li>
+        <li class="active"><a href="/category/pythonji-chu.html">python基础</a></li>
+        <li><a href="/category/xiang-mu-guan-li.html">项目管理</a></li>
         <li><a href="/category/xiao-ji-qiao.html">小技巧</a></li>
   </ul> -->
 
